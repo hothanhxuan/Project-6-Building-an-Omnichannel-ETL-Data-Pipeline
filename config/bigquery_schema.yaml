@@ -1,0 +1,191 @@
+# BigQuery Schema Configuration for TechStore Vietnam
+bigquery:
+  project_id: "minpyws"
+  dataset: "techstore_analytics"
+  location: "US"
+
+# Dimension Tables
+dimensions:
+  dim_customers:
+    description: "Customer information from all channels"
+    partition_field: "created_at"
+    partition_type: "DAY"
+    columns:
+      - {name: "customer_id", type: "INTEGER", mode: "REQUIRED", description: "Unique customer ID"}
+      - {name: "email", type: "STRING", mode: "NULLABLE", description: "Customer email"}
+      - {name: "full_name", type: "STRING", mode: "NULLABLE", description: "Customer full name"}
+      - {name: "phone", type: "STRING", mode: "NULLABLE", description: "Phone number"}
+      - {name: "city", type: "STRING", mode: "NULLABLE", description: "City"}
+      - {name: "country", type: "STRING", mode: "NULLABLE", description: "Country"}
+      - {name: "created_at", type: "TIMESTAMP", mode: "NULLABLE", description: "Account creation date"}
+      - {name: "customer_segment", type: "STRING", mode: "NULLABLE", description: "Segment: VIP, Regular, At-risk, New"}
+      - {name: "lifetime_value_vnd", type: "INTEGER", mode: "NULLABLE", description: "Total spending in VND"}
+      - {name: "total_orders", type: "INTEGER", mode: "NULLABLE", description: "Total number of orders"}
+      - {name: "first_order_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Date of first order"}
+      - {name: "last_order_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Date of last order"}
+
+  dim_products:
+    description: "Product catalog"
+    columns:
+      - {name: "product_id", type: "INTEGER", mode: "REQUIRED", description: "Unique product ID"}
+      - {name: "product_name", type: "STRING", mode: "NULLABLE", description: "Product name"}
+      - {name: "sku", type: "STRING", mode: "NULLABLE", description: "Stock keeping unit"}
+      - {name: "barcode", type: "STRING", mode: "NULLABLE", description: "Barcode"}
+      - {name: "category", type: "STRING", mode: "NULLABLE", description: "Product category"}
+      - {name: "brand", type: "STRING", mode: "NULLABLE", description: "Brand name"}
+      - {name: "price_vnd", type: "INTEGER", mode: "NULLABLE", description: "Price in VND"}
+      - {name: "price_usd", type: "FLOAT", mode: "NULLABLE", description: "Price in USD"}
+      - {name: "stock_quantity", type: "INTEGER", mode: "NULLABLE", description: "Current stock quantity"}
+      - {name: "is_active", type: "BOOLEAN", mode: "NULLABLE", description: "Product active status"}
+
+  dim_locations:
+    description: "Store and warehouse locations"
+    columns:
+      - {name: "location_id", type: "INTEGER", mode: "REQUIRED", description: "Unique location ID"}
+      - {name: "location_code", type: "STRING", mode: "NULLABLE", description: "Location code"}
+      - {name: "location_name", type: "STRING", mode: "NULLABLE", description: "Location name"}
+      - {name: "location_type", type: "STRING", mode: "NULLABLE", description: "Type: store, warehouse"}
+      - {name: "city", type: "STRING", mode: "NULLABLE", description: "City"}
+      - {name: "address", type: "STRING", mode: "NULLABLE", description: "Full address"}
+      - {name: "phone", type: "STRING", mode: "NULLABLE", description: "Contact phone"}
+      - {name: "is_active", type: "BOOLEAN", mode: "NULLABLE", description: "Location active status"}
+
+  dim_staff:
+    description: "Staff information"
+    columns:
+      - {name: "staff_id", type: "INTEGER", mode: "REQUIRED", description: "Unique staff ID"}
+      - {name: "staff_code", type: "STRING", mode: "NULLABLE", description: "Staff code"}
+      - {name: "full_name", type: "STRING", mode: "NULLABLE", description: "Staff full name"}
+      - {name: "position", type: "STRING", mode: "NULLABLE", description: "Job position"}
+      - {name: "email", type: "STRING", mode: "NULLABLE", description: "Email address"}
+      - {name: "phone", type: "STRING", mode: "NULLABLE", description: "Phone number"}
+      - {name: "location_id", type: "INTEGER", mode: "NULLABLE", description: "Assigned location"}
+      - {name: "hire_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Hire date"}
+      - {name: "is_active", type: "BOOLEAN", mode: "NULLABLE", description: "Active status"}
+
+  dim_date:
+    description: "Date dimension for time-series analysis"
+    columns:
+      - {name: "date_key", type: "INTEGER", mode: "REQUIRED", description: "Date key YYYYMMDD"}
+      - {name: "full_date", type: "DATE", mode: "REQUIRED", description: "Full date"}
+      - {name: "year", type: "INTEGER", mode: "NULLABLE", description: "Year"}
+      - {name: "quarter", type: "INTEGER", mode: "NULLABLE", description: "Quarter (1-4)"}
+      - {name: "month", type: "INTEGER", mode: "NULLABLE", description: "Month (1-12)"}
+      - {name: "month_name", type: "STRING", mode: "NULLABLE", description: "Month name"}
+      - {name: "week", type: "INTEGER", mode: "NULLABLE", description: "ISO week number"}
+      - {name: "day_of_month", type: "INTEGER", mode: "NULLABLE", description: "Day of month"}
+      - {name: "day_of_week", type: "INTEGER", mode: "NULLABLE", description: "Day of week (0=Mon)"}
+      - {name: "day_name", type: "STRING", mode: "NULLABLE", description: "Day name"}
+      - {name: "is_weekend", type: "BOOLEAN", mode: "NULLABLE", description: "Weekend flag"}
+      - {name: "is_holiday", type: "BOOLEAN", mode: "NULLABLE", description: "Holiday flag"}
+      - {name: "fiscal_year", type: "INTEGER", mode: "NULLABLE", description: "Fiscal year"}
+      - {name: "fiscal_quarter", type: "INTEGER", mode: "NULLABLE", description: "Fiscal quarter"}
+
+# Fact Tables
+facts:
+  fact_orders:
+    description: "All orders from all channels"
+    partition_field: "order_date"
+    partition_type: "DAY"
+    clustering_fields: ["customer_id", "channel"]
+    columns:
+      - {name: "order_key", type: "STRING", mode: "REQUIRED", description: "Surrogate key"}
+      - {name: "order_id", type: "STRING", mode: "NULLABLE", description: "Original order ID"}
+      - {name: "order_number", type: "STRING", mode: "NULLABLE", description: "Order number"}
+      - {name: "transaction_id", type: "STRING", mode: "NULLABLE", description: "Transaction ID"}
+      - {name: "customer_id", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_customers"}
+      - {name: "location_id", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_locations"}
+      - {name: "order_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Order date"}
+      - {name: "order_date_key", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_date"}
+      - {name: "channel", type: "STRING", mode: "NULLABLE", description: "Sales channel"}
+      - {name: "source", type: "STRING", mode: "NULLABLE", description: "Data source system"}
+      - {name: "status", type: "STRING", mode: "NULLABLE", description: "Order status"}
+      - {name: "payment_status", type: "STRING", mode: "NULLABLE", description: "Payment status"}
+      - {name: "payment_gateway", type: "STRING", mode: "NULLABLE", description: "Payment gateway used"}
+      - {name: "payment_method", type: "STRING", mode: "NULLABLE", description: "Payment method"}
+      - {name: "total_vnd", type: "INTEGER", mode: "NULLABLE", description: "Total amount in VND"}
+      - {name: "total_usd", type: "FLOAT", mode: "NULLABLE", description: "Total amount in USD"}
+
+  fact_order_items:
+    description: "Order line items detail"
+    partition_field: "order_date"
+    partition_type: "DAY"
+    clustering_fields: ["product_id"]
+    columns:
+      - {name: "order_item_key", type: "STRING", mode: "REQUIRED", description: "Surrogate key"}
+      - {name: "order_key", type: "STRING", mode: "NULLABLE", description: "FK to fact_orders"}
+      - {name: "order_id", type: "STRING", mode: "NULLABLE", description: "Original order ID"}
+      - {name: "transaction_id", type: "STRING", mode: "NULLABLE", description: "Transaction ID"}
+      - {name: "product_id", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_products"}
+      - {name: "product_name", type: "STRING", mode: "NULLABLE", description: "Product name"}
+      - {name: "quantity", type: "INTEGER", mode: "NULLABLE", description: "Quantity ordered"}
+      - {name: "unit_price_vnd", type: "INTEGER", mode: "NULLABLE", description: "Unit price in VND"}
+      - {name: "line_total_vnd", type: "INTEGER", mode: "NULLABLE", description: "Line total in VND"}
+      - {name: "order_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Order date for partitioning"}
+      - {name: "order_date_key", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_date"}
+
+  fact_payments:
+    description: "Payment transactions from all gateways"
+    partition_field: "payment_date"
+    partition_type: "DAY"
+    clustering_fields: ["customer_id", "payment_gateway"]
+    columns:
+      - {name: "payment_key", type: "STRING", mode: "REQUIRED", description: "Surrogate key"}
+      - {name: "transaction_id", type: "STRING", mode: "NULLABLE", description: "Transaction ID"}
+      - {name: "order_id", type: "STRING", mode: "NULLABLE", description: "Related order ID"}
+      - {name: "customer_id", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_customers"}
+      - {name: "payment_gateway", type: "STRING", mode: "NULLABLE", description: "Gateway: paypal, momo, zalopay"}
+      - {name: "payment_method", type: "STRING", mode: "NULLABLE", description: "Payment method"}
+      - {name: "amount_vnd", type: "INTEGER", mode: "NULLABLE", description: "Amount in VND"}
+      - {name: "amount_usd", type: "FLOAT", mode: "NULLABLE", description: "Amount in USD"}
+      - {name: "payment_status", type: "STRING", mode: "NULLABLE", description: "Payment status"}
+      - {name: "payment_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Payment date"}
+      - {name: "payment_date_key", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_date"}
+      - {name: "source", type: "STRING", mode: "NULLABLE", description: "Data source system"}
+
+  fact_cart_events:
+    description: "User behavior and cart tracking events"
+    partition_field: "event_timestamp"
+    partition_type: "DAY"
+    clustering_fields: ["customer_id", "session_id", "event_type"]
+    columns:
+      - {name: "event_key", type: "STRING", mode: "REQUIRED", description: "Surrogate key"}
+      - {name: "event_id", type: "STRING", mode: "NULLABLE", description: "Original event ID"}
+      - {name: "session_id", type: "STRING", mode: "NULLABLE", description: "Session ID"}
+      - {name: "customer_id", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_customers"}
+      - {name: "event_type", type: "STRING", mode: "NULLABLE", description: "Event type"}
+      - {name: "event_timestamp", type: "TIMESTAMP", mode: "NULLABLE", description: "Event timestamp"}
+      - {name: "event_date_key", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_date"}
+      - {name: "product_id", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_products"}
+      - {name: "source", type: "STRING", mode: "NULLABLE", description: "Traffic source"}
+      - {name: "device", type: "STRING", mode: "NULLABLE", description: "Device type"}
+      - {name: "browser", type: "STRING", mode: "NULLABLE", description: "Browser"}
+      - {name: "utm_source", type: "STRING", mode: "NULLABLE", description: "UTM source"}
+      - {name: "utm_campaign", type: "STRING", mode: "NULLABLE", description: "UTM campaign"}
+
+  fact_bank_transactions:
+    description: "Mercury bank transactions"
+    partition_field: "transaction_date"
+    partition_type: "DAY"
+    columns:
+      - {name: "transaction_key", type: "STRING", mode: "REQUIRED", description: "Surrogate key"}
+      - {name: "transaction_id", type: "STRING", mode: "NULLABLE", description: "Transaction ID"}
+      - {name: "account_id", type: "STRING", mode: "NULLABLE", description: "Bank account ID"}
+      - {name: "transaction_type", type: "STRING", mode: "NULLABLE", description: "Transaction kind"}
+      - {name: "amount_usd", type: "FLOAT", mode: "NULLABLE", description: "Amount in USD"}
+      - {name: "amount_vnd", type: "INTEGER", mode: "NULLABLE", description: "Amount in VND"}
+      - {name: "status", type: "STRING", mode: "NULLABLE", description: "Transaction status"}
+      - {name: "description", type: "STRING", mode: "NULLABLE", description: "Bank description"}
+      - {name: "counterparty", type: "STRING", mode: "NULLABLE", description: "Counterparty name"}
+      - {name: "transaction_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Transaction date"}
+      - {name: "transaction_date_key", type: "INTEGER", mode: "NULLABLE", description: "FK to dim_date"}
+      - {name: "source", type: "STRING", mode: "NULLABLE", description: "Data source"}
+
+# Views
+views:
+  vw_customer_journey:
+    description: "Customer journey from first touchpoint to purchase"
+  vw_cashflow_daily:
+    description: "Daily cashflow report"
+  vw_payment_status:
+    description: "Payment status classification for orders"

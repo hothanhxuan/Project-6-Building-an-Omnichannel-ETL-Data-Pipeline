@@ -1,0 +1,7 @@
+docs
+.env
+__pycache__/
+*.pyc
+.vscode/
+.DS_Store
+config/minpyws-e52b3983be71.json

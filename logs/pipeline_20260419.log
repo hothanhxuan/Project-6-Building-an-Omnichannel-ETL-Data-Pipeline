@@ -1,0 +1,983 @@
+2026-04-19 01:28:02 | INFO     | Main | main:53 | Mode: FULL PIPELINE
+2026-04-19 01:28:02 | INFO     | PipelineOrchestrator | run_full_pipeline:58 | ============================================================
+2026-04-19 01:28:02 | INFO     | PipelineOrchestrator | run_full_pipeline:59 | STARTING FULL ETL PIPELINE
+2026-04-19 01:28:02 | INFO     | PipelineOrchestrator | run_full_pipeline:60 | Timestamp: 2026-04-19T01:28:02.479095
+2026-04-19 01:28:02 | INFO     | PipelineOrchestrator | run_full_pipeline:61 | ============================================================
+2026-04-19 01:28:02 | INFO     | PipelineOrchestrator | _step_create_dataset:120 | ────────────────────────────────────────
+2026-04-19 01:28:02 | INFO     | PipelineOrchestrator | _step_create_dataset:121 | STEP 1: Creating BigQuery dataset...
+2026-04-19 01:28:03 | INFO     | BigQueryLoader | create_dataset_if_not_exists:51 | Dataset 'minpyws.techstore_analytics' already exists
+2026-04-19 01:28:03 | INFO     | PipelineOrchestrator | _step_extract:126 | ────────────────────────────────────────
+2026-04-19 01:28:03 | INFO     | PipelineOrchestrator | _step_extract:127 | STEP 2: EXTRACTING data from GCS...
+2026-04-19 01:28:03 | INFO     | ShopifyExtractor | extract_orders:23 | Starting Shopify orders extraction...
+2026-04-19 01:28:03 | INFO     | ShopifyExtractor | extract_json_gzip_batches:57 | Extracting batch 1/5: shopify/orders_batch_0.json.gz
+2026-04-19 01:28:03 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_0.json.gz
+2026-04-19 01:28:15 | INFO     | ShopifyExtractor | extract_json_gzip:39 | Extracted 100000 records from shopify/orders_batch_0.json.gz
+2026-04-19 01:28:15 | INFO     | ShopifyExtractor | extract_json_gzip_batches:57 | Extracting batch 2/5: shopify/orders_batch_1.json.gz
+2026-04-19 01:28:15 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_1.json.gz
+2026-04-19 01:28:23 | INFO     | ShopifyExtractor | extract_json_gzip:39 | Extracted 100000 records from shopify/orders_batch_1.json.gz
+2026-04-19 01:28:23 | INFO     | ShopifyExtractor | extract_json_gzip_batches:57 | Extracting batch 3/5: shopify/orders_batch_2.json.gz
+2026-04-19 01:28:23 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_2.json.gz
+2026-04-19 01:28:30 | INFO     | ShopifyExtractor | extract_json_gzip:39 | Extracted 100000 records from shopify/orders_batch_2.json.gz
+2026-04-19 01:28:30 | INFO     | ShopifyExtractor | extract_json_gzip_batches:57 | Extracting batch 4/5: shopify/orders_batch_3.json.gz
+2026-04-19 01:28:30 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_3.json.gz
+2026-04-19 01:28:38 | INFO     | ShopifyExtractor | extract_json_gzip:39 | Extracted 100000 records from shopify/orders_batch_3.json.gz
+2026-04-19 01:28:38 | INFO     | ShopifyExtractor | extract_json_gzip_batches:57 | Extracting batch 5/5: shopify/orders_batch_4.json.gz
+2026-04-19 01:28:38 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_4.json.gz
+2026-04-19 01:28:45 | INFO     | ShopifyExtractor | extract_json_gzip:39 | Extracted 100000 records from shopify/orders_batch_4.json.gz
+2026-04-19 01:28:45 | INFO     | ShopifyExtractor | extract_json_gzip_batches:63 | Total records from 5 batches: 500000
+2026-04-19 01:28:45 | INFO     | ShopifyExtractor | extract_orders:29 | Shopify extraction complete: 500000 total orders
+2026-04-19 01:28:45 | INFO     | SapoExtractor | extract_customers:36 | Starting customer extraction...
+2026-04-19 01:28:45 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 1/10: shared/customers/customers_batch_0.json.gz
+2026-04-19 01:28:45 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_0.json.gz
+2026-04-19 01:28:50 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_0.json.gz
+2026-04-19 01:28:50 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 2/10: shared/customers/customers_batch_1.json.gz
+2026-04-19 01:28:50 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_1.json.gz
+2026-04-19 01:28:53 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_1.json.gz
+2026-04-19 01:28:53 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 3/10: shared/customers/customers_batch_2.json.gz
+2026-04-19 01:28:53 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_2.json.gz
+2026-04-19 01:28:55 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_2.json.gz
+2026-04-19 01:28:55 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 4/10: shared/customers/customers_batch_3.json.gz
+2026-04-19 01:28:55 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_3.json.gz
+2026-04-19 01:28:58 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_3.json.gz
+2026-04-19 01:28:58 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 5/10: shared/customers/customers_batch_4.json.gz
+2026-04-19 01:28:58 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_4.json.gz
+2026-04-19 01:29:00 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_4.json.gz
+2026-04-19 01:29:00 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 6/10: shared/customers/customers_batch_5.json.gz
+2026-04-19 01:29:00 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_5.json.gz
+2026-04-19 01:29:03 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_5.json.gz
+2026-04-19 01:29:03 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 7/10: shared/customers/customers_batch_6.json.gz
+2026-04-19 01:29:03 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_6.json.gz
+2026-04-19 01:29:05 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_6.json.gz
+2026-04-19 01:29:05 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 8/10: shared/customers/customers_batch_7.json.gz
+2026-04-19 01:29:05 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_7.json.gz
+2026-04-19 01:29:08 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_7.json.gz
+2026-04-19 01:29:08 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 9/10: shared/customers/customers_batch_8.json.gz
+2026-04-19 01:29:08 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_8.json.gz
+2026-04-19 01:29:11 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_8.json.gz
+2026-04-19 01:29:11 | INFO     | SapoExtractor | extract_json_gzip_batches:57 | Extracting batch 10/10: shared/customers/customers_batch_9.json.gz
+2026-04-19 01:29:11 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_9.json.gz
+2026-04-19 01:29:13 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 10000 records from shared/customers/customers_batch_9.json.gz
+2026-04-19 01:29:13 | INFO     | SapoExtractor | extract_json_gzip_batches:63 | Total records from 10 batches: 100000
+2026-04-19 01:29:13 | INFO     | SapoExtractor | extract_customers:42 | Customer extraction complete: 100000 customers
+2026-04-19 01:29:13 | INFO     | SapoExtractor | extract_products:52 | Starting products extraction...
+2026-04-19 01:29:13 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/products.json.gz
+2026-04-19 01:29:14 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 1300 records from shared/products.json.gz
+2026-04-19 01:29:14 | INFO     | SapoExtractor | extract_products:54 | Products extraction complete: 1300 products
+2026-04-19 01:29:14 | INFO     | SapoExtractor | extract_locations:64 | Starting locations extraction...
+2026-04-19 01:29:14 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/sapo_locations.json.gz
+2026-04-19 01:29:15 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 50 records from shared/sapo_locations.json.gz
+2026-04-19 01:29:15 | INFO     | SapoExtractor | extract_locations:66 | Locations extraction complete: 50 locations
+2026-04-19 01:29:15 | INFO     | SapoExtractor | extract_orders:24 | Starting Sapo orders extraction...
+2026-04-19 01:29:15 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/sapo/transactions.json.gz
+2026-04-19 01:29:19 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 5000 records from sapo/transactions.json.gz
+2026-04-19 01:29:19 | INFO     | SapoExtractor | extract_orders:26 | Sapo extraction complete: 5000 orders
+2026-04-19 01:29:19 | INFO     | SapoExtractor | extract_online_orders:76 | Starting online orders extraction...
+2026-04-19 01:29:19 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/online_orders/online_orders.json.gz
+2026-04-19 01:29:46 | INFO     | SapoExtractor | extract_json_gzip:39 | Extracted 200000 records from online_orders/online_orders.json.gz
+2026-04-19 01:29:46 | INFO     | SapoExtractor | extract_online_orders:78 | Online orders extraction complete: 200000 orders
+2026-04-19 01:29:46 | INFO     | PaymentExtractor | extract_paypal:23 | Starting PayPal extraction...
+2026-04-19 01:29:46 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/paypal/transactions.json.gz
+2026-04-19 01:29:52 | INFO     | PaymentExtractor | extract_json_gzip:39 | Extracted 11000 records from paypal/transactions.json.gz
+2026-04-19 01:29:52 | INFO     | PaymentExtractor | extract_paypal:25 | PayPal extraction complete: 11000 transactions
+2026-04-19 01:29:52 | INFO     | PaymentExtractor | extract_momo:35 | Starting MoMo extraction...
+2026-04-19 01:29:52 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/momo/transactions.json.gz
+2026-04-19 01:29:56 | INFO     | PaymentExtractor | extract_json_gzip:39 | Extracted 40000 records from momo/transactions.json.gz
+2026-04-19 01:29:56 | INFO     | PaymentExtractor | extract_momo:37 | MoMo extraction complete: 40000 transactions
+2026-04-19 01:29:56 | INFO     | PaymentExtractor | extract_zalopay:47 | Starting ZaloPay extraction...
+2026-04-19 01:29:56 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/zalopay/transactions.json.gz
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_json_gzip:39 | Extracted 55000 records from zalopay/transactions.json.gz
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_zalopay:49 | ZaloPay extraction complete: 55000 transactions
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_mercury_accounts:59 | Starting Mercury accounts extraction...
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/accounts.json.gz
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_json_gzip:39 | Extracted 3 records from mercury/accounts.json.gz
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_mercury_accounts:61 | Mercury accounts extraction complete: 3 accounts
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_mercury_transactions:71 | Starting Mercury transactions extraction...
+2026-04-19 01:30:01 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/transactions.json.gz
+2026-04-19 01:30:05 | INFO     | PaymentExtractor | extract_json_gzip:39 | Extracted 5000 records from mercury/transactions.json.gz
+2026-04-19 01:30:05 | INFO     | PaymentExtractor | extract_mercury_transactions:73 | Mercury transactions extraction complete: 5000 transactions
+2026-04-19 01:30:05 | INFO     | TrackingExtractor | extract_cart_events:26 | Starting cart events extraction (large file, please wait)...
+2026-04-19 01:30:05 | INFO     | TrackingExtractor | extract_json_gzip:24 | Extracting: gs://minpy/cart_tracking/cart_events.json.gz
+2026-04-19 01:31:00 | ERROR    | PipelineOrchestrator | run_full_pipeline:93 | PIPELINE FAILED after 177.7s: 
+2026-04-19 01:31:00 | ERROR    | Main | main:91 | Pipeline failed: 
+2026-04-19 01:46:04 | INFO     | Main | main:53 | Mode: FULL PIPELINE
+2026-04-19 01:46:05 | INFO     | PipelineOrchestrator | run_full_pipeline:58 | ============================================================
+2026-04-19 01:46:05 | INFO     | PipelineOrchestrator | run_full_pipeline:59 | STARTING FULL ETL PIPELINE
+2026-04-19 01:46:05 | INFO     | PipelineOrchestrator | run_full_pipeline:60 | Timestamp: 2026-04-19T01:46:05.269261
+2026-04-19 01:46:05 | INFO     | PipelineOrchestrator | run_full_pipeline:61 | ============================================================
+2026-04-19 01:46:05 | INFO     | PipelineOrchestrator | _step_create_dataset:120 | ────────────────────────────────────────
+2026-04-19 01:46:05 | INFO     | PipelineOrchestrator | _step_create_dataset:121 | STEP 1: Creating BigQuery dataset...
+2026-04-19 01:46:06 | INFO     | BigQueryLoader | create_dataset_if_not_exists:51 | Dataset 'minpyws.techstore_analytics' already exists
+2026-04-19 01:46:06 | INFO     | PipelineOrchestrator | _step_extract:126 | ────────────────────────────────────────
+2026-04-19 01:46:06 | INFO     | PipelineOrchestrator | _step_extract:127 | STEP 2: EXTRACTING data from GCS...
+2026-04-19 01:46:06 | INFO     | ShopifyExtractor | extract_orders:23 | Starting Shopify orders extraction...
+2026-04-19 01:46:06 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 1/5: shopify/orders_batch_0.json.gz
+2026-04-19 01:46:06 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_0.json.gz
+2026-04-19 01:46:18 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_0.json.gz
+2026-04-19 01:46:18 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 2/5: shopify/orders_batch_1.json.gz
+2026-04-19 01:46:18 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_1.json.gz
+2026-04-19 01:46:29 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_1.json.gz
+2026-04-19 01:46:29 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 3/5: shopify/orders_batch_2.json.gz
+2026-04-19 01:46:29 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_2.json.gz
+2026-04-19 01:46:38 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_2.json.gz
+2026-04-19 01:46:38 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 4/5: shopify/orders_batch_3.json.gz
+2026-04-19 01:46:38 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_3.json.gz
+2026-04-19 01:46:47 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_3.json.gz
+2026-04-19 01:46:47 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 5/5: shopify/orders_batch_4.json.gz
+2026-04-19 01:46:47 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_4.json.gz
+2026-04-19 01:46:57 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_4.json.gz
+2026-04-19 01:46:58 | INFO     | ShopifyExtractor | extract_json_gzip_batches:77 | Total records from 5 batches: 500000
+2026-04-19 01:46:58 | INFO     | ShopifyExtractor | extract_orders:29 | Shopify extraction complete: 500000 total orders
+2026-04-19 01:46:58 | INFO     | SapoExtractor | extract_customers:36 | Starting customer extraction...
+2026-04-19 01:46:58 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 1/10: shared/customers/customers_batch_0.json.gz
+2026-04-19 01:46:58 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_0.json.gz
+2026-04-19 01:47:03 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_0.json.gz
+2026-04-19 01:47:03 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 2/10: shared/customers/customers_batch_1.json.gz
+2026-04-19 01:47:03 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_1.json.gz
+2026-04-19 01:47:06 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_1.json.gz
+2026-04-19 01:47:06 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 3/10: shared/customers/customers_batch_2.json.gz
+2026-04-19 01:47:06 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_2.json.gz
+2026-04-19 01:47:08 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_2.json.gz
+2026-04-19 01:47:08 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 4/10: shared/customers/customers_batch_3.json.gz
+2026-04-19 01:47:08 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_3.json.gz
+2026-04-19 01:47:11 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_3.json.gz
+2026-04-19 01:47:11 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 5/10: shared/customers/customers_batch_4.json.gz
+2026-04-19 01:47:11 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_4.json.gz
+2026-04-19 01:47:14 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_4.json.gz
+2026-04-19 01:47:14 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 6/10: shared/customers/customers_batch_5.json.gz
+2026-04-19 01:47:14 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_5.json.gz
+2026-04-19 01:47:16 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_5.json.gz
+2026-04-19 01:47:16 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 7/10: shared/customers/customers_batch_6.json.gz
+2026-04-19 01:47:16 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_6.json.gz
+2026-04-19 01:47:21 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_6.json.gz
+2026-04-19 01:47:21 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 8/10: shared/customers/customers_batch_7.json.gz
+2026-04-19 01:47:21 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_7.json.gz
+2026-04-19 01:47:24 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_7.json.gz
+2026-04-19 01:47:24 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 9/10: shared/customers/customers_batch_8.json.gz
+2026-04-19 01:47:24 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_8.json.gz
+2026-04-19 01:47:26 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_8.json.gz
+2026-04-19 01:47:26 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 10/10: shared/customers/customers_batch_9.json.gz
+2026-04-19 01:47:26 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_9.json.gz
+2026-04-19 01:47:28 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_9.json.gz
+2026-04-19 01:47:28 | INFO     | SapoExtractor | extract_json_gzip_batches:77 | Total records from 10 batches: 100000
+2026-04-19 01:47:28 | INFO     | SapoExtractor | extract_customers:42 | Customer extraction complete: 100000 customers
+2026-04-19 01:47:28 | INFO     | SapoExtractor | extract_products:52 | Starting products extraction...
+2026-04-19 01:47:28 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/products.json.gz
+2026-04-19 01:47:29 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 1300 records from shared/products.json.gz
+2026-04-19 01:47:29 | INFO     | SapoExtractor | extract_products:54 | Products extraction complete: 1300 products
+2026-04-19 01:47:29 | INFO     | SapoExtractor | extract_locations:64 | Starting locations extraction...
+2026-04-19 01:47:29 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/sapo_locations.json.gz
+2026-04-19 01:47:30 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 50 records from shared/sapo_locations.json.gz
+2026-04-19 01:47:30 | INFO     | SapoExtractor | extract_locations:66 | Locations extraction complete: 50 locations
+2026-04-19 01:47:30 | INFO     | SapoExtractor | extract_orders:24 | Starting Sapo orders extraction...
+2026-04-19 01:47:30 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/sapo/transactions.json.gz
+2026-04-19 01:47:34 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 5000 records from sapo/transactions.json.gz
+2026-04-19 01:47:34 | INFO     | SapoExtractor | extract_orders:26 | Sapo extraction complete: 5000 orders
+2026-04-19 01:47:34 | INFO     | SapoExtractor | extract_online_orders:76 | Starting online orders extraction...
+2026-04-19 01:47:34 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/online_orders/online_orders.json.gz
+2026-04-19 01:48:12 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 200000 records from online_orders/online_orders.json.gz
+2026-04-19 01:48:12 | INFO     | SapoExtractor | extract_online_orders:78 | Online orders extraction complete: 200000 orders
+2026-04-19 01:48:12 | INFO     | PaymentExtractor | extract_paypal:23 | Starting PayPal extraction...
+2026-04-19 01:48:12 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/paypal/transactions.json.gz
+2026-04-19 01:48:20 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 11000 records from paypal/transactions.json.gz
+2026-04-19 01:48:20 | INFO     | PaymentExtractor | extract_paypal:25 | PayPal extraction complete: 11000 transactions
+2026-04-19 01:48:20 | INFO     | PaymentExtractor | extract_momo:35 | Starting MoMo extraction...
+2026-04-19 01:48:20 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/momo/transactions.json.gz
+2026-04-19 01:48:27 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 40000 records from momo/transactions.json.gz
+2026-04-19 01:48:27 | INFO     | PaymentExtractor | extract_momo:37 | MoMo extraction complete: 40000 transactions
+2026-04-19 01:48:27 | INFO     | PaymentExtractor | extract_zalopay:47 | Starting ZaloPay extraction...
+2026-04-19 01:48:27 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/zalopay/transactions.json.gz
+2026-04-19 01:48:32 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 55000 records from zalopay/transactions.json.gz
+2026-04-19 01:48:32 | INFO     | PaymentExtractor | extract_zalopay:49 | ZaloPay extraction complete: 55000 transactions
+2026-04-19 01:48:32 | INFO     | PaymentExtractor | extract_mercury_accounts:59 | Starting Mercury accounts extraction...
+2026-04-19 01:48:32 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/accounts.json.gz
+2026-04-19 01:48:33 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 3 records from mercury/accounts.json.gz
+2026-04-19 01:48:33 | INFO     | PaymentExtractor | extract_mercury_accounts:61 | Mercury accounts extraction complete: 3 accounts
+2026-04-19 01:48:33 | INFO     | PaymentExtractor | extract_mercury_transactions:71 | Starting Mercury transactions extraction...
+2026-04-19 01:48:33 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/transactions.json.gz
+2026-04-19 01:48:36 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 5000 records from mercury/transactions.json.gz
+2026-04-19 01:48:36 | INFO     | PaymentExtractor | extract_mercury_transactions:73 | Mercury transactions extraction complete: 5000 transactions
+2026-04-19 01:48:36 | INFO     | TrackingExtractor | extract_cart_events:26 | Starting cart events extraction (large file, please wait)...
+2026-04-19 01:48:36 | INFO     | TrackingExtractor | extract_json_gzip:24 | Extracting: gs://minpy/cart_tracking/cart_events.json.gz
+2026-04-19 01:50:46 | ERROR    | PipelineOrchestrator | run_full_pipeline:93 | PIPELINE FAILED after 281.5s: Insufficient memory for buffer allocation
+2026-04-19 01:50:46 | ERROR    | Main | main:91 | Pipeline failed: Insufficient memory for buffer allocation
+2026-04-19 01:59:39 | INFO     | Main | main:53 | Mode: FULL PIPELINE
+2026-04-19 01:59:39 | INFO     | PipelineOrchestrator | run_full_pipeline:58 | ============================================================
+2026-04-19 01:59:39 | INFO     | PipelineOrchestrator | run_full_pipeline:59 | STARTING FULL ETL PIPELINE
+2026-04-19 01:59:39 | INFO     | PipelineOrchestrator | run_full_pipeline:60 | Timestamp: 2026-04-19T01:59:39.414842
+2026-04-19 01:59:39 | INFO     | PipelineOrchestrator | run_full_pipeline:61 | ============================================================
+2026-04-19 01:59:39 | INFO     | PipelineOrchestrator | _step_create_dataset:120 | ────────────────────────────────────────
+2026-04-19 01:59:39 | INFO     | PipelineOrchestrator | _step_create_dataset:121 | STEP 1: Creating BigQuery dataset...
+2026-04-19 01:59:40 | INFO     | BigQueryLoader | create_dataset_if_not_exists:51 | Dataset 'minpyws.techstore_analytics' already exists
+2026-04-19 01:59:40 | INFO     | PipelineOrchestrator | _step_extract:126 | ────────────────────────────────────────
+2026-04-19 01:59:40 | INFO     | PipelineOrchestrator | _step_extract:127 | STEP 2: EXTRACTING data from GCS...
+2026-04-19 01:59:40 | INFO     | ShopifyExtractor | extract_orders:23 | Starting Shopify orders extraction...
+2026-04-19 01:59:40 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 1/5: shopify/orders_batch_0.json.gz
+2026-04-19 01:59:40 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_0.json.gz
+2026-04-19 01:59:52 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_0.json.gz
+2026-04-19 01:59:52 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 2/5: shopify/orders_batch_1.json.gz
+2026-04-19 01:59:52 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_1.json.gz
+2026-04-19 02:00:01 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_1.json.gz
+2026-04-19 02:00:01 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 3/5: shopify/orders_batch_2.json.gz
+2026-04-19 02:00:01 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_2.json.gz
+2026-04-19 02:00:11 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_2.json.gz
+2026-04-19 02:00:11 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 4/5: shopify/orders_batch_3.json.gz
+2026-04-19 02:00:11 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_3.json.gz
+2026-04-19 02:00:19 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_3.json.gz
+2026-04-19 02:00:19 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 5/5: shopify/orders_batch_4.json.gz
+2026-04-19 02:00:19 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_4.json.gz
+2026-04-19 02:00:28 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_4.json.gz
+2026-04-19 02:00:28 | INFO     | ShopifyExtractor | extract_json_gzip_batches:77 | Total records from 5 batches: 500000
+2026-04-19 02:00:28 | INFO     | ShopifyExtractor | extract_orders:29 | Shopify extraction complete: 500000 total orders
+2026-04-19 02:00:28 | INFO     | SapoExtractor | extract_customers:36 | Starting customer extraction...
+2026-04-19 02:00:28 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 1/10: shared/customers/customers_batch_0.json.gz
+2026-04-19 02:00:28 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_0.json.gz
+2026-04-19 02:00:33 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_0.json.gz
+2026-04-19 02:00:33 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 2/10: shared/customers/customers_batch_1.json.gz
+2026-04-19 02:00:33 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_1.json.gz
+2026-04-19 02:00:36 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_1.json.gz
+2026-04-19 02:00:36 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 3/10: shared/customers/customers_batch_2.json.gz
+2026-04-19 02:00:36 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_2.json.gz
+2026-04-19 02:00:39 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_2.json.gz
+2026-04-19 02:00:39 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 4/10: shared/customers/customers_batch_3.json.gz
+2026-04-19 02:00:39 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_3.json.gz
+2026-04-19 02:00:42 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_3.json.gz
+2026-04-19 02:00:42 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 5/10: shared/customers/customers_batch_4.json.gz
+2026-04-19 02:00:42 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_4.json.gz
+2026-04-19 02:00:44 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_4.json.gz
+2026-04-19 02:00:44 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 6/10: shared/customers/customers_batch_5.json.gz
+2026-04-19 02:00:44 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_5.json.gz
+2026-04-19 02:00:47 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_5.json.gz
+2026-04-19 02:00:47 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 7/10: shared/customers/customers_batch_6.json.gz
+2026-04-19 02:00:47 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_6.json.gz
+2026-04-19 02:00:49 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_6.json.gz
+2026-04-19 02:00:49 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 8/10: shared/customers/customers_batch_7.json.gz
+2026-04-19 02:00:49 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_7.json.gz
+2026-04-19 02:00:52 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_7.json.gz
+2026-04-19 02:00:52 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 9/10: shared/customers/customers_batch_8.json.gz
+2026-04-19 02:00:52 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_8.json.gz
+2026-04-19 02:00:55 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_8.json.gz
+2026-04-19 02:00:55 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 10/10: shared/customers/customers_batch_9.json.gz
+2026-04-19 02:00:55 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_9.json.gz
+2026-04-19 02:00:57 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_9.json.gz
+2026-04-19 02:00:57 | INFO     | SapoExtractor | extract_json_gzip_batches:77 | Total records from 10 batches: 100000
+2026-04-19 02:00:57 | INFO     | SapoExtractor | extract_customers:42 | Customer extraction complete: 100000 customers
+2026-04-19 02:00:57 | INFO     | SapoExtractor | extract_products:52 | Starting products extraction...
+2026-04-19 02:00:57 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/products.json.gz
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 1300 records from shared/products.json.gz
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_products:54 | Products extraction complete: 1300 products
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_locations:64 | Starting locations extraction...
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/sapo_locations.json.gz
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 50 records from shared/sapo_locations.json.gz
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_locations:66 | Locations extraction complete: 50 locations
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_orders:24 | Starting Sapo orders extraction...
+2026-04-19 02:00:59 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/sapo/transactions.json.gz
+2026-04-19 02:01:03 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 5000 records from sapo/transactions.json.gz
+2026-04-19 02:01:03 | INFO     | SapoExtractor | extract_orders:26 | Sapo extraction complete: 5000 orders
+2026-04-19 02:01:03 | INFO     | SapoExtractor | extract_online_orders:76 | Starting online orders extraction...
+2026-04-19 02:01:03 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/online_orders/online_orders.json.gz
+2026-04-19 02:01:42 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 200000 records from online_orders/online_orders.json.gz
+2026-04-19 02:01:42 | INFO     | SapoExtractor | extract_online_orders:78 | Online orders extraction complete: 200000 orders
+2026-04-19 02:01:42 | INFO     | PaymentExtractor | extract_paypal:23 | Starting PayPal extraction...
+2026-04-19 02:01:42 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/paypal/transactions.json.gz
+2026-04-19 02:01:48 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 11000 records from paypal/transactions.json.gz
+2026-04-19 02:01:48 | INFO     | PaymentExtractor | extract_paypal:25 | PayPal extraction complete: 11000 transactions
+2026-04-19 02:01:48 | INFO     | PaymentExtractor | extract_momo:35 | Starting MoMo extraction...
+2026-04-19 02:01:48 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/momo/transactions.json.gz
+2026-04-19 02:01:53 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 40000 records from momo/transactions.json.gz
+2026-04-19 02:01:53 | INFO     | PaymentExtractor | extract_momo:37 | MoMo extraction complete: 40000 transactions
+2026-04-19 02:01:53 | INFO     | PaymentExtractor | extract_zalopay:47 | Starting ZaloPay extraction...
+2026-04-19 02:01:53 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/zalopay/transactions.json.gz
+2026-04-19 02:01:59 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 55000 records from zalopay/transactions.json.gz
+2026-04-19 02:01:59 | INFO     | PaymentExtractor | extract_zalopay:49 | ZaloPay extraction complete: 55000 transactions
+2026-04-19 02:01:59 | INFO     | PaymentExtractor | extract_mercury_accounts:59 | Starting Mercury accounts extraction...
+2026-04-19 02:01:59 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/accounts.json.gz
+2026-04-19 02:02:00 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 3 records from mercury/accounts.json.gz
+2026-04-19 02:02:00 | INFO     | PaymentExtractor | extract_mercury_accounts:61 | Mercury accounts extraction complete: 3 accounts
+2026-04-19 02:02:00 | INFO     | PaymentExtractor | extract_mercury_transactions:71 | Starting Mercury transactions extraction...
+2026-04-19 02:02:00 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/transactions.json.gz
+2026-04-19 02:02:03 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 5000 records from mercury/transactions.json.gz
+2026-04-19 02:02:03 | INFO     | PaymentExtractor | extract_mercury_transactions:73 | Mercury transactions extraction complete: 5000 transactions
+2026-04-19 02:02:03 | INFO     | TrackingExtractor | extract_cart_events:26 | Starting cart events extraction (large file, please wait)...
+2026-04-19 02:02:03 | INFO     | TrackingExtractor | extract_json_gzip:24 | Extracting: gs://minpy/cart_tracking/cart_events.json.gz
+2026-04-19 02:04:09 | ERROR    | PipelineOrchestrator | run_full_pipeline:93 | PIPELINE FAILED after 270.0s: Insufficient memory for buffer allocation
+2026-04-19 02:04:09 | ERROR    | Main | main:91 | Pipeline failed: Insufficient memory for buffer allocation
+2026-04-19 02:14:56 | INFO     | Main | main:58 | Mode: EXTRACT ONLY
+2026-04-19 02:14:57 | INFO     | PipelineOrchestrator | run_extract_only:99 | Running EXTRACT ONLY mode...
+2026-04-19 02:14:57 | INFO     | PipelineOrchestrator | _step_extract:126 | ────────────────────────────────────────
+2026-04-19 02:14:57 | INFO     | PipelineOrchestrator | _step_extract:127 | STEP 2: EXTRACTING data from GCS...
+2026-04-19 02:14:57 | INFO     | ShopifyExtractor | extract_orders:23 | Starting Shopify orders extraction...
+2026-04-19 02:14:57 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 1/5: shopify/orders_batch_0.json.gz
+2026-04-19 02:14:57 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_0.json.gz
+2026-04-19 02:15:10 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_0.json.gz
+2026-04-19 02:15:11 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 2/5: shopify/orders_batch_1.json.gz
+2026-04-19 02:15:11 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_1.json.gz
+2026-04-19 02:15:22 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_1.json.gz
+2026-04-19 02:15:22 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 3/5: shopify/orders_batch_2.json.gz
+2026-04-19 02:15:22 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_2.json.gz
+2026-04-19 02:15:33 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_2.json.gz
+2026-04-19 02:15:33 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 4/5: shopify/orders_batch_3.json.gz
+2026-04-19 02:15:33 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_3.json.gz
+2026-04-19 02:15:43 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_3.json.gz
+2026-04-19 02:15:43 | INFO     | ShopifyExtractor | extract_json_gzip_batches:71 | Extracting batch 5/5: shopify/orders_batch_4.json.gz
+2026-04-19 02:15:43 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_4.json.gz
+2026-04-19 02:15:55 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_4.json.gz
+2026-04-19 02:15:55 | INFO     | ShopifyExtractor | extract_json_gzip_batches:77 | Total records from 5 batches: 500000
+2026-04-19 02:15:55 | INFO     | ShopifyExtractor | extract_orders:29 | Shopify extraction complete: 500000 total orders
+2026-04-19 02:15:55 | INFO     | SapoExtractor | extract_customers:36 | Starting customer extraction...
+2026-04-19 02:15:55 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 1/10: shared/customers/customers_batch_0.json.gz
+2026-04-19 02:15:55 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_0.json.gz
+2026-04-19 02:16:00 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_0.json.gz
+2026-04-19 02:16:00 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 2/10: shared/customers/customers_batch_1.json.gz
+2026-04-19 02:16:00 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_1.json.gz
+2026-04-19 02:16:03 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_1.json.gz
+2026-04-19 02:16:03 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 3/10: shared/customers/customers_batch_2.json.gz
+2026-04-19 02:16:03 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_2.json.gz
+2026-04-19 02:16:05 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_2.json.gz
+2026-04-19 02:16:05 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 4/10: shared/customers/customers_batch_3.json.gz
+2026-04-19 02:16:05 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_3.json.gz
+2026-04-19 02:16:08 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_3.json.gz
+2026-04-19 02:16:08 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 5/10: shared/customers/customers_batch_4.json.gz
+2026-04-19 02:16:08 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_4.json.gz
+2026-04-19 02:16:10 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_4.json.gz
+2026-04-19 02:16:10 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 6/10: shared/customers/customers_batch_5.json.gz
+2026-04-19 02:16:10 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_5.json.gz
+2026-04-19 02:16:13 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_5.json.gz
+2026-04-19 02:16:13 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 7/10: shared/customers/customers_batch_6.json.gz
+2026-04-19 02:16:13 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_6.json.gz
+2026-04-19 02:16:16 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_6.json.gz
+2026-04-19 02:16:16 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 8/10: shared/customers/customers_batch_7.json.gz
+2026-04-19 02:16:16 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_7.json.gz
+2026-04-19 02:16:18 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_7.json.gz
+2026-04-19 02:16:18 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 9/10: shared/customers/customers_batch_8.json.gz
+2026-04-19 02:16:18 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_8.json.gz
+2026-04-19 02:16:21 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_8.json.gz
+2026-04-19 02:16:21 | INFO     | SapoExtractor | extract_json_gzip_batches:71 | Extracting batch 10/10: shared/customers/customers_batch_9.json.gz
+2026-04-19 02:16:21 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_9.json.gz
+2026-04-19 02:16:24 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_9.json.gz
+2026-04-19 02:16:24 | INFO     | SapoExtractor | extract_json_gzip_batches:77 | Total records from 10 batches: 100000
+2026-04-19 02:16:24 | INFO     | SapoExtractor | extract_customers:42 | Customer extraction complete: 100000 customers
+2026-04-19 02:16:24 | INFO     | SapoExtractor | extract_products:52 | Starting products extraction...
+2026-04-19 02:16:24 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/products.json.gz
+2026-04-19 02:16:25 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 1300 records from shared/products.json.gz
+2026-04-19 02:16:25 | INFO     | SapoExtractor | extract_products:54 | Products extraction complete: 1300 products
+2026-04-19 02:16:25 | INFO     | SapoExtractor | extract_locations:64 | Starting locations extraction...
+2026-04-19 02:16:25 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/sapo_locations.json.gz
+2026-04-19 02:16:26 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 50 records from shared/sapo_locations.json.gz
+2026-04-19 02:16:26 | INFO     | SapoExtractor | extract_locations:66 | Locations extraction complete: 50 locations
+2026-04-19 02:16:26 | INFO     | SapoExtractor | extract_orders:24 | Starting Sapo orders extraction...
+2026-04-19 02:16:26 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/sapo/transactions.json.gz
+2026-04-19 02:16:29 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 5000 records from sapo/transactions.json.gz
+2026-04-19 02:16:29 | INFO     | SapoExtractor | extract_orders:26 | Sapo extraction complete: 5000 orders
+2026-04-19 02:16:29 | INFO     | SapoExtractor | extract_online_orders:76 | Starting online orders extraction...
+2026-04-19 02:16:29 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/online_orders/online_orders.json.gz
+2026-04-19 02:17:22 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 200000 records from online_orders/online_orders.json.gz
+2026-04-19 02:17:22 | INFO     | SapoExtractor | extract_online_orders:78 | Online orders extraction complete: 200000 orders
+2026-04-19 02:17:22 | INFO     | PaymentExtractor | extract_paypal:23 | Starting PayPal extraction...
+2026-04-19 02:17:22 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/paypal/transactions.json.gz
+2026-04-19 02:17:29 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 11000 records from paypal/transactions.json.gz
+2026-04-19 02:17:29 | INFO     | PaymentExtractor | extract_paypal:25 | PayPal extraction complete: 11000 transactions
+2026-04-19 02:17:29 | INFO     | PaymentExtractor | extract_momo:35 | Starting MoMo extraction...
+2026-04-19 02:17:29 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/momo/transactions.json.gz
+2026-04-19 02:17:34 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 40000 records from momo/transactions.json.gz
+2026-04-19 02:17:34 | INFO     | PaymentExtractor | extract_momo:37 | MoMo extraction complete: 40000 transactions
+2026-04-19 02:17:34 | INFO     | PaymentExtractor | extract_zalopay:47 | Starting ZaloPay extraction...
+2026-04-19 02:17:34 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/zalopay/transactions.json.gz
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 55000 records from zalopay/transactions.json.gz
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_zalopay:49 | ZaloPay extraction complete: 55000 transactions
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_mercury_accounts:59 | Starting Mercury accounts extraction...
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/accounts.json.gz
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 3 records from mercury/accounts.json.gz
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_mercury_accounts:61 | Mercury accounts extraction complete: 3 accounts
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_mercury_transactions:71 | Starting Mercury transactions extraction...
+2026-04-19 02:17:41 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/transactions.json.gz
+2026-04-19 02:17:45 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 5000 records from mercury/transactions.json.gz
+2026-04-19 02:17:45 | INFO     | PaymentExtractor | extract_mercury_transactions:73 | Mercury transactions extraction complete: 5000 transactions
+2026-04-19 02:17:45 | INFO     | TrackingExtractor | extract_cart_events:26 | Starting cart events extraction (large file, please wait)...
+2026-04-19 02:17:45 | INFO     | TrackingExtractor | extract_json_gzip:24 | Extracting: gs://minpy/cart_tracking/cart_events.json.gz
+2026-04-19 02:19:45 | ERROR    | Main | main:91 | Pipeline failed: Insufficient memory for buffer allocation
+2026-04-19 02:40:24 | INFO     | Main | main:53 | Mode: FULL PIPELINE
+2026-04-19 02:40:25 | INFO     | PipelineOrchestrator | run_full_pipeline:105 | ============================================================
+2026-04-19 02:40:25 | INFO     | PipelineOrchestrator | run_full_pipeline:106 | STARTING FULL ETL PIPELINE (Memory-Optimized)
+2026-04-19 02:40:25 | INFO     | PipelineOrchestrator | run_full_pipeline:107 | Timestamp: 2026-04-19T02:40:25.001364
+2026-04-19 02:40:25 | INFO     | PipelineOrchestrator | run_full_pipeline:108 | ============================================================
+2026-04-19 02:40:25 | INFO     | PipelineOrchestrator | _step_create_dataset:390 | ────────────────────────────────────────
+2026-04-19 02:40:25 | INFO     | PipelineOrchestrator | _step_create_dataset:391 | STEP: Creating BigQuery dataset...
+2026-04-19 02:40:26 | INFO     | BigQueryLoader | create_dataset_if_not_exists:51 | Dataset 'minpyws.techstore_analytics' already exists
+2026-04-19 02:40:26 | INFO     | PipelineOrchestrator | run_full_pipeline:117 | ────────────────────────────────────────
+2026-04-19 02:40:26 | INFO     | PipelineOrchestrator | run_full_pipeline:118 | PHASE A: DIMENSIONS [RAM: 117 MB]
+2026-04-19 02:40:27 | INFO     | SapoExtractor | extract_customers:36 | Starting customer extraction...
+2026-04-19 02:40:27 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 1/10: shared/customers/customers_batch_0.json.gz
+2026-04-19 02:40:27 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_0.json.gz
+2026-04-19 02:40:32 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_0.json.gz
+2026-04-19 02:40:32 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 2/10: shared/customers/customers_batch_1.json.gz
+2026-04-19 02:40:32 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_1.json.gz
+2026-04-19 02:40:35 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_1.json.gz
+2026-04-19 02:40:35 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 3/10: shared/customers/customers_batch_2.json.gz
+2026-04-19 02:40:35 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_2.json.gz
+2026-04-19 02:40:38 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_2.json.gz
+2026-04-19 02:40:38 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 4/10: shared/customers/customers_batch_3.json.gz
+2026-04-19 02:40:38 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_3.json.gz
+2026-04-19 02:40:40 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_3.json.gz
+2026-04-19 02:40:40 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 5/10: shared/customers/customers_batch_4.json.gz
+2026-04-19 02:40:40 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_4.json.gz
+2026-04-19 02:40:43 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_4.json.gz
+2026-04-19 02:40:43 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 6/10: shared/customers/customers_batch_5.json.gz
+2026-04-19 02:40:43 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_5.json.gz
+2026-04-19 02:40:45 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_5.json.gz
+2026-04-19 02:40:45 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 7/10: shared/customers/customers_batch_6.json.gz
+2026-04-19 02:40:45 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_6.json.gz
+2026-04-19 02:40:50 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_6.json.gz
+2026-04-19 02:40:50 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 8/10: shared/customers/customers_batch_7.json.gz
+2026-04-19 02:40:50 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_7.json.gz
+2026-04-19 02:40:52 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_7.json.gz
+2026-04-19 02:40:52 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 9/10: shared/customers/customers_batch_8.json.gz
+2026-04-19 02:40:52 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_8.json.gz
+2026-04-19 02:40:55 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_8.json.gz
+2026-04-19 02:40:55 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 10/10: shared/customers/customers_batch_9.json.gz
+2026-04-19 02:40:55 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_9.json.gz
+2026-04-19 02:40:57 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_9.json.gz
+2026-04-19 02:40:57 | INFO     | SapoExtractor | extract_json_gzip_batches:127 | Total records from 10 batches: 100000
+2026-04-19 02:40:57 | INFO     | SapoExtractor | extract_customers:42 | Customer extraction complete: 100000 customers
+2026-04-19 02:40:57 | INFO     | SapoExtractor | extract_products:52 | Starting products extraction...
+2026-04-19 02:40:57 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/products.json.gz
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 1300 records from shared/products.json.gz
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_products:54 | Products extraction complete: 1300 products
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_locations:64 | Starting locations extraction...
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/sapo_locations.json.gz
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 50 records from shared/sapo_locations.json.gz
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_locations:66 | Locations extraction complete: 50 locations
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_orders:24 | Starting Sapo orders extraction...
+2026-04-19 02:40:59 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/sapo/transactions.json.gz
+2026-04-19 02:41:03 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 5000 records from sapo/transactions.json.gz
+2026-04-19 02:41:03 | INFO     | SapoExtractor | extract_orders:26 | Sapo extraction complete: 5000 orders
+2026-04-19 02:41:03 | INFO     | DimensionTransformer | transform_dim_customers:33 | Transforming dim_customers...
+2026-04-19 02:41:03 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_customers] No duplicates found on ['customer_id']
+2026-04-19 02:41:03 | INFO     | DimensionTransformer | validate_date_range:116 | [dim_customers] Date range for 'created_at': 2023-12-17 19:59:26.237721 to 2025-12-15 19:59:37.375962
+2026-04-19 02:41:03 | INFO     | DimensionTransformer | transform_dim_customers:70 | dim_customers: 100000 rows
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | transform_dim_products:86 | Transforming dim_products...
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_products] No duplicates found on ['product_id']
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | validate_amounts:152 | [dim_products] 'price_vnd' stats: mean=19,338,538, median=6,850,000, std=26,822,415
+2026-04-19 02:41:04 | WARNING  | DimensionTransformer | validate_amounts:161 | [dim_products] Column 'price_vnd': 40 potential outliers (>3σ)
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | validate_amounts:152 | [dim_products] 'price_usd' stats: mean=806, median=285, std=1,118
+2026-04-19 02:41:04 | WARNING  | DimensionTransformer | validate_amounts:161 | [dim_products] Column 'price_usd': 40 potential outliers (>3σ)
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | transform_dim_products:114 | dim_products: 1300 rows
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | transform_dim_locations:130 | Transforming dim_locations...
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_locations] No duplicates found on ['location_id']
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | transform_dim_locations:159 | dim_locations: 50 rows
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | transform_dim_staff:176 | Transforming dim_staff...
+2026-04-19 02:41:04 | WARNING  | DimensionTransformer | transform_dim_staff:207 | No staff data available. Creating empty dim_staff.
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | transform_dim_date:230 | Generating dim_date from 2024-01-01 to 2027-12-31...
+2026-04-19 02:41:04 | INFO     | DimensionTransformer | transform_dim_date:262 | dim_date: 1461 rows generated
+2026-04-19 02:41:04 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Dimensions to BigQuery...
+2026-04-19 02:41:04 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 100000 rows into minpyws.techstore_analytics.dim_customers (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:41:04 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: created_at
+2026-04-19 02:41:05 | ERROR    | BigQueryLoader | load_dataframe:117 | Failed to load data into minpyws.techstore_analytics.dim_customers: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/minpyws/jobs?uploadType=multipart: Incompatible table partitioning specification. Expects partitioning specification none, but input partitioning specification is interval(type:day,field:created_at)
+2026-04-19 02:41:05 | ERROR    | PipelineOrchestrator | run_full_pipeline:279 | PIPELINE FAILED after 40.8s: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/minpyws/jobs?uploadType=multipart: Incompatible table partitioning specification. Expects partitioning specification none, but input partitioning specification is interval(type:day,field:created_at)
+2026-04-19 02:41:05 | ERROR    | Main | main:91 | Pipeline failed: 400 POST https://bigquery.googleapis.com/upload/bigquery/v2/projects/minpyws/jobs?uploadType=multipart: Incompatible table partitioning specification. Expects partitioning specification none, but input partitioning specification is interval(type:day,field:created_at)
+2026-04-19 02:42:52 | INFO     | Main | main:53 | Mode: FULL PIPELINE
+2026-04-19 02:42:52 | INFO     | PipelineOrchestrator | run_full_pipeline:105 | ============================================================
+2026-04-19 02:42:52 | INFO     | PipelineOrchestrator | run_full_pipeline:106 | STARTING FULL ETL PIPELINE (Memory-Optimized)
+2026-04-19 02:42:52 | INFO     | PipelineOrchestrator | run_full_pipeline:107 | Timestamp: 2026-04-19T02:42:52.091658
+2026-04-19 02:42:52 | INFO     | PipelineOrchestrator | run_full_pipeline:108 | ============================================================
+2026-04-19 02:42:52 | INFO     | PipelineOrchestrator | _step_create_dataset:390 | ────────────────────────────────────────
+2026-04-19 02:42:52 | INFO     | PipelineOrchestrator | _step_create_dataset:391 | STEP: Creating BigQuery dataset...
+2026-04-19 02:42:53 | INFO     | BigQueryLoader | create_dataset_if_not_exists:51 | Dataset 'minpyws.techstore_analytics' already exists
+2026-04-19 02:42:53 | INFO     | PipelineOrchestrator | run_full_pipeline:117 | ────────────────────────────────────────
+2026-04-19 02:42:53 | INFO     | PipelineOrchestrator | run_full_pipeline:118 | PHASE A: DIMENSIONS [RAM: 117 MB]
+2026-04-19 02:42:53 | INFO     | SapoExtractor | extract_customers:36 | Starting customer extraction...
+2026-04-19 02:42:53 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 1/10: shared/customers/customers_batch_0.json.gz
+2026-04-19 02:42:53 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_0.json.gz
+2026-04-19 02:43:00 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_0.json.gz
+2026-04-19 02:43:00 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 2/10: shared/customers/customers_batch_1.json.gz
+2026-04-19 02:43:00 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_1.json.gz
+2026-04-19 02:43:02 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_1.json.gz
+2026-04-19 02:43:02 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 3/10: shared/customers/customers_batch_2.json.gz
+2026-04-19 02:43:02 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_2.json.gz
+2026-04-19 02:43:05 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_2.json.gz
+2026-04-19 02:43:05 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 4/10: shared/customers/customers_batch_3.json.gz
+2026-04-19 02:43:05 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_3.json.gz
+2026-04-19 02:43:07 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_3.json.gz
+2026-04-19 02:43:07 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 5/10: shared/customers/customers_batch_4.json.gz
+2026-04-19 02:43:07 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_4.json.gz
+2026-04-19 02:43:10 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_4.json.gz
+2026-04-19 02:43:10 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 6/10: shared/customers/customers_batch_5.json.gz
+2026-04-19 02:43:10 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_5.json.gz
+2026-04-19 02:43:13 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_5.json.gz
+2026-04-19 02:43:13 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 7/10: shared/customers/customers_batch_6.json.gz
+2026-04-19 02:43:13 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_6.json.gz
+2026-04-19 02:43:15 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_6.json.gz
+2026-04-19 02:43:15 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 8/10: shared/customers/customers_batch_7.json.gz
+2026-04-19 02:43:15 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_7.json.gz
+2026-04-19 02:43:18 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_7.json.gz
+2026-04-19 02:43:18 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 9/10: shared/customers/customers_batch_8.json.gz
+2026-04-19 02:43:18 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_8.json.gz
+2026-04-19 02:43:22 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_8.json.gz
+2026-04-19 02:43:22 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 10/10: shared/customers/customers_batch_9.json.gz
+2026-04-19 02:43:22 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_9.json.gz
+2026-04-19 02:43:25 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_9.json.gz
+2026-04-19 02:43:25 | INFO     | SapoExtractor | extract_json_gzip_batches:127 | Total records from 10 batches: 100000
+2026-04-19 02:43:25 | INFO     | SapoExtractor | extract_customers:42 | Customer extraction complete: 100000 customers
+2026-04-19 02:43:25 | INFO     | SapoExtractor | extract_products:52 | Starting products extraction...
+2026-04-19 02:43:25 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/products.json.gz
+2026-04-19 02:43:26 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 1300 records from shared/products.json.gz
+2026-04-19 02:43:26 | INFO     | SapoExtractor | extract_products:54 | Products extraction complete: 1300 products
+2026-04-19 02:43:26 | INFO     | SapoExtractor | extract_locations:64 | Starting locations extraction...
+2026-04-19 02:43:26 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/sapo_locations.json.gz
+2026-04-19 02:43:27 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 50 records from shared/sapo_locations.json.gz
+2026-04-19 02:43:27 | INFO     | SapoExtractor | extract_locations:66 | Locations extraction complete: 50 locations
+2026-04-19 02:43:27 | INFO     | SapoExtractor | extract_orders:24 | Starting Sapo orders extraction...
+2026-04-19 02:43:27 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/sapo/transactions.json.gz
+2026-04-19 02:43:30 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 5000 records from sapo/transactions.json.gz
+2026-04-19 02:43:30 | INFO     | SapoExtractor | extract_orders:26 | Sapo extraction complete: 5000 orders
+2026-04-19 02:43:30 | INFO     | DimensionTransformer | transform_dim_customers:33 | Transforming dim_customers...
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_customers] No duplicates found on ['customer_id']
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | validate_date_range:116 | [dim_customers] Date range for 'created_at': 2023-12-17 19:59:26.237721 to 2025-12-15 19:59:37.375962
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_customers:70 | dim_customers: 100000 rows
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_products:86 | Transforming dim_products...
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_products] No duplicates found on ['product_id']
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | validate_amounts:152 | [dim_products] 'price_vnd' stats: mean=19,338,538, median=6,850,000, std=26,822,415
+2026-04-19 02:43:31 | WARNING  | DimensionTransformer | validate_amounts:161 | [dim_products] Column 'price_vnd': 40 potential outliers (>3σ)
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | validate_amounts:152 | [dim_products] 'price_usd' stats: mean=806, median=285, std=1,118
+2026-04-19 02:43:31 | WARNING  | DimensionTransformer | validate_amounts:161 | [dim_products] Column 'price_usd': 40 potential outliers (>3σ)
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_products:114 | dim_products: 1300 rows
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_locations:130 | Transforming dim_locations...
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_locations] No duplicates found on ['location_id']
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_locations:159 | dim_locations: 50 rows
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_staff:176 | Transforming dim_staff...
+2026-04-19 02:43:31 | WARNING  | DimensionTransformer | transform_dim_staff:207 | No staff data available. Creating empty dim_staff.
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_date:230 | Generating dim_date from 2024-01-01 to 2027-12-31...
+2026-04-19 02:43:31 | INFO     | DimensionTransformer | transform_dim_date:262 | dim_date: 1461 rows generated
+2026-04-19 02:43:31 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Dimensions to BigQuery...
+2026-04-19 02:43:31 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 100000 rows into minpyws.techstore_analytics.dim_customers (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:43:31 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: created_at
+2026-04-19 02:43:32 | WARNING  | BigQueryLoader | load_dataframe:120 | Table minpyws.techstore_analytics.dim_customers has incompatible partitioning. Dropping and recreating...
+2026-04-19 02:43:32 | INFO     | BigQueryLoader | load_dataframe:126 | Deleted incompatible table: minpyws.techstore_analytics.dim_customers
+2026-04-19 02:43:48 | INFO     | BigQueryLoader | load_dataframe:135 | Successfully loaded 100000 rows into minpyws.techstore_analytics.dim_customers (recreated with correct partitioning)
+2026-04-19 02:43:48 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 1300 rows into minpyws.techstore_analytics.dim_products (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:44:00 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 1300 rows into minpyws.techstore_analytics.dim_products
+2026-04-19 02:44:00 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 50 rows into minpyws.techstore_analytics.dim_locations (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:44:05 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 50 rows into minpyws.techstore_analytics.dim_locations
+2026-04-19 02:44:05 | WARNING  | PipelineOrchestrator | _load_tables:382 | Skipping empty table: dim_staff
+2026-04-19 02:44:05 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 1461 rows into minpyws.techstore_analytics.dim_date (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:44:11 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 1461 rows into minpyws.techstore_analytics.dim_date
+2026-04-19 02:44:11 | INFO     | PipelineOrchestrator | run_full_pipeline:151 | Phase A complete. [RAM: 213 MB]
+2026-04-19 02:44:11 | INFO     | PipelineOrchestrator | run_full_pipeline:156 | ────────────────────────────────────────
+2026-04-19 02:44:11 | INFO     | PipelineOrchestrator | run_full_pipeline:157 | PHASE B: ORDER FACTS [RAM: 213 MB]
+2026-04-19 02:44:11 | INFO     | ShopifyExtractor | extract_orders:23 | Starting Shopify orders extraction...
+2026-04-19 02:44:11 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 1/5: shopify/orders_batch_0.json.gz
+2026-04-19 02:44:11 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_0.json.gz
+2026-04-19 02:44:23 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_0.json.gz
+2026-04-19 02:44:23 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 2/5: shopify/orders_batch_1.json.gz
+2026-04-19 02:44:23 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_1.json.gz
+2026-04-19 02:44:35 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_1.json.gz
+2026-04-19 02:44:35 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 3/5: shopify/orders_batch_2.json.gz
+2026-04-19 02:44:35 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_2.json.gz
+2026-04-19 02:44:45 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_2.json.gz
+2026-04-19 02:44:45 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 4/5: shopify/orders_batch_3.json.gz
+2026-04-19 02:44:45 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_3.json.gz
+2026-04-19 02:44:54 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_3.json.gz
+2026-04-19 02:44:54 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 5/5: shopify/orders_batch_4.json.gz
+2026-04-19 02:44:54 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_4.json.gz
+2026-04-19 02:45:03 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_4.json.gz
+2026-04-19 02:45:03 | INFO     | ShopifyExtractor | extract_json_gzip_batches:127 | Total records from 5 batches: 500000
+2026-04-19 02:45:03 | INFO     | ShopifyExtractor | extract_orders:29 | Shopify extraction complete: 500000 total orders
+2026-04-19 02:45:03 | INFO     | SapoExtractor | extract_online_orders:76 | Starting online orders extraction...
+2026-04-19 02:45:03 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/online_orders/online_orders.json.gz
+2026-04-19 02:45:35 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 200000 records from online_orders/online_orders.json.gz
+2026-04-19 02:45:35 | INFO     | SapoExtractor | extract_online_orders:78 | Online orders extraction complete: 200000 orders
+2026-04-19 02:45:35 | INFO     | FactTransformer | transform_fact_orders:40 | Transforming fact_orders...
+2026-04-19 02:45:35 | INFO     | FactTransformer | transform_fact_orders:45 | Processing 500000 Shopify orders...
+2026-04-19 02:45:51 | INFO     | FactTransformer | transform_fact_orders:80 | Processing 5000 Sapo orders...
+2026-04-19 02:45:51 | INFO     | FactTransformer | transform_fact_orders:117 | Processing 200000 online orders...
+2026-04-19 02:46:05 | INFO     | FactTransformer | transform_fact_orders:160 | Combining orders from all channels...
+2026-04-19 02:46:37 | WARNING  | FactTransformer | check_nulls:42 | [fact_orders] Column 'customer_id' has 5000 null values (0.71%)
+2026-04-19 02:46:37 | WARNING  | FactTransformer | check_duplicates:66 | [fact_orders] Found 444 duplicate records on ['order_key']. Removing...
+2026-04-19 02:46:38 | INFO     | FactTransformer | validate_date_range:116 | [fact_orders] Date range for 'order_date': 2025-01-06 15:48:54.567378 to 2026-01-06 15:49:57.642486
+2026-04-19 02:46:38 | INFO     | FactTransformer | validate_amounts:152 | [fact_orders] 'total_vnd' stats: mean=113,237,014, median=78,320,000, std=113,439,581
+2026-04-19 02:46:38 | WARNING  | FactTransformer | validate_amounts:161 | [fact_orders] Column 'total_vnd': 11714 potential outliers (>3σ)
+2026-04-19 02:46:38 | INFO     | FactTransformer | transform_fact_orders:214 | fact_orders: 704556 rows
+2026-04-19 02:46:43 | INFO     | FactTransformer | transform_fact_order_items:238 | Transforming fact_order_items...
+2026-04-19 02:46:43 | INFO     | FactTransformer | transform_fact_order_items:251 | Extracting line items from shopify (500000 orders)...
+2026-04-19 02:47:14 | INFO     | FactTransformer | transform_fact_order_items:251 | Extracting line items from sapo_pos (5000 orders)...
+2026-04-19 02:47:15 | INFO     | FactTransformer | transform_fact_order_items:251 | Extracting line items from online (200000 orders)...
+2026-04-19 02:49:43 | INFO     | FactTransformer | validate_amounts:152 | [fact_order_items] 'unit_price_vnd' stats: mean=17,645,212, median=6,000,000, std=23,781,511
+2026-04-19 02:49:43 | WARNING  | FactTransformer | validate_amounts:161 | [fact_order_items] Column 'unit_price_vnd': 55802 potential outliers (>3σ)
+2026-04-19 02:49:43 | INFO     | FactTransformer | validate_amounts:152 | [fact_order_items] 'line_total_vnd' stats: mean=34,568,156, median=11,400,000, std=52,395,355
+2026-04-19 02:49:43 | WARNING  | FactTransformer | validate_amounts:161 | [fact_order_items] Column 'line_total_vnd': 48610 potential outliers (>3σ)
+2026-04-19 02:49:43 | INFO     | FactTransformer | transform_fact_order_items:323 | fact_order_items: 2099029 rows
+2026-04-19 02:50:11 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Order facts to BigQuery...
+2026-04-19 02:50:11 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 704556 rows into minpyws.techstore_analytics.fact_orders (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:50:11 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: order_date
+2026-04-19 02:50:11 | INFO     | BigQueryLoader | load_dataframe:102 |   Clustering on: ['customer_id', 'channel']
+2026-04-19 02:50:16 | WARNING  | BigQueryLoader | load_dataframe:120 | Table minpyws.techstore_analytics.fact_orders has incompatible partitioning. Dropping and recreating...
+2026-04-19 02:50:16 | INFO     | BigQueryLoader | load_dataframe:126 | Deleted incompatible table: minpyws.techstore_analytics.fact_orders
+2026-04-19 02:50:24 | ERROR    | BigQueryLoader | load_dataframe:141 | Retry failed for minpyws.techstore_analytics.fact_orders: 400 Field customer_id has type FLOAT, which is not supported for clustering.; reason: invalid, message: Field customer_id has type FLOAT, which is not supported for clustering.
+2026-04-19 02:50:24 | ERROR    | PipelineOrchestrator | run_full_pipeline:279 | PIPELINE FAILED after 452.3s: 400 Field customer_id has type FLOAT, which is not supported for clustering.; reason: invalid, message: Field customer_id has type FLOAT, which is not supported for clustering.
+2026-04-19 02:50:24 | ERROR    | Main | main:91 | Pipeline failed: 400 Field customer_id has type FLOAT, which is not supported for clustering.; reason: invalid, message: Field customer_id has type FLOAT, which is not supported for clustering.
+2026-04-19 02:56:39 | INFO     | Main | main:53 | Mode: FULL PIPELINE
+2026-04-19 02:56:39 | INFO     | PipelineOrchestrator | run_full_pipeline:105 | ============================================================
+2026-04-19 02:56:39 | INFO     | PipelineOrchestrator | run_full_pipeline:106 | STARTING FULL ETL PIPELINE (Memory-Optimized)
+2026-04-19 02:56:39 | INFO     | PipelineOrchestrator | run_full_pipeline:107 | Timestamp: 2026-04-19T02:56:39.220415
+2026-04-19 02:56:39 | INFO     | PipelineOrchestrator | run_full_pipeline:108 | ============================================================
+2026-04-19 02:56:39 | INFO     | PipelineOrchestrator | _step_create_dataset:390 | ────────────────────────────────────────
+2026-04-19 02:56:39 | INFO     | PipelineOrchestrator | _step_create_dataset:391 | STEP: Creating BigQuery dataset...
+2026-04-19 02:56:40 | INFO     | BigQueryLoader | create_dataset_if_not_exists:51 | Dataset 'minpyws.techstore_analytics' already exists
+2026-04-19 02:56:40 | INFO     | PipelineOrchestrator | run_full_pipeline:117 | ────────────────────────────────────────
+2026-04-19 02:56:40 | INFO     | PipelineOrchestrator | run_full_pipeline:118 | PHASE A: DIMENSIONS [RAM: 117 MB]
+2026-04-19 02:56:41 | INFO     | SapoExtractor | extract_customers:36 | Starting customer extraction...
+2026-04-19 02:56:41 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 1/10: shared/customers/customers_batch_0.json.gz
+2026-04-19 02:56:41 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_0.json.gz
+2026-04-19 02:56:46 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_0.json.gz
+2026-04-19 02:56:46 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 2/10: shared/customers/customers_batch_1.json.gz
+2026-04-19 02:56:46 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_1.json.gz
+2026-04-19 02:56:49 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_1.json.gz
+2026-04-19 02:56:49 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 3/10: shared/customers/customers_batch_2.json.gz
+2026-04-19 02:56:49 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_2.json.gz
+2026-04-19 02:56:51 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_2.json.gz
+2026-04-19 02:56:51 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 4/10: shared/customers/customers_batch_3.json.gz
+2026-04-19 02:56:51 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_3.json.gz
+2026-04-19 02:56:54 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_3.json.gz
+2026-04-19 02:56:54 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 5/10: shared/customers/customers_batch_4.json.gz
+2026-04-19 02:56:54 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_4.json.gz
+2026-04-19 02:56:56 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_4.json.gz
+2026-04-19 02:56:56 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 6/10: shared/customers/customers_batch_5.json.gz
+2026-04-19 02:56:56 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_5.json.gz
+2026-04-19 02:56:59 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_5.json.gz
+2026-04-19 02:56:59 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 7/10: shared/customers/customers_batch_6.json.gz
+2026-04-19 02:56:59 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_6.json.gz
+2026-04-19 02:57:02 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_6.json.gz
+2026-04-19 02:57:02 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 8/10: shared/customers/customers_batch_7.json.gz
+2026-04-19 02:57:02 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_7.json.gz
+2026-04-19 02:57:04 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_7.json.gz
+2026-04-19 02:57:04 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 9/10: shared/customers/customers_batch_8.json.gz
+2026-04-19 02:57:04 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_8.json.gz
+2026-04-19 02:57:07 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_8.json.gz
+2026-04-19 02:57:07 | INFO     | SapoExtractor | extract_json_gzip_batches:121 | Extracting batch 10/10: shared/customers/customers_batch_9.json.gz
+2026-04-19 02:57:07 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/customers/customers_batch_9.json.gz
+2026-04-19 02:57:09 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 10000 records from shared/customers/customers_batch_9.json.gz
+2026-04-19 02:57:09 | INFO     | SapoExtractor | extract_json_gzip_batches:127 | Total records from 10 batches: 100000
+2026-04-19 02:57:09 | INFO     | SapoExtractor | extract_customers:42 | Customer extraction complete: 100000 customers
+2026-04-19 02:57:09 | INFO     | SapoExtractor | extract_products:52 | Starting products extraction...
+2026-04-19 02:57:09 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/products.json.gz
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 1300 records from shared/products.json.gz
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_products:54 | Products extraction complete: 1300 products
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_locations:64 | Starting locations extraction...
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shared/sapo_locations.json.gz
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 50 records from shared/sapo_locations.json.gz
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_locations:66 | Locations extraction complete: 50 locations
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_orders:24 | Starting Sapo orders extraction...
+2026-04-19 02:57:11 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/sapo/transactions.json.gz
+2026-04-19 02:57:15 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 5000 records from sapo/transactions.json.gz
+2026-04-19 02:57:15 | INFO     | SapoExtractor | extract_orders:26 | Sapo extraction complete: 5000 orders
+2026-04-19 02:57:15 | INFO     | DimensionTransformer | transform_dim_customers:33 | Transforming dim_customers...
+2026-04-19 02:57:15 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_customers] No duplicates found on ['customer_id']
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | validate_date_range:116 | [dim_customers] Date range for 'created_at': 2023-12-17 19:59:26.237721 to 2025-12-15 19:59:37.375962
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_customers:70 | dim_customers: 100000 rows
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_products:86 | Transforming dim_products...
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_products] No duplicates found on ['product_id']
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | validate_amounts:152 | [dim_products] 'price_vnd' stats: mean=19,338,538, median=6,850,000, std=26,822,415
+2026-04-19 02:57:16 | WARNING  | DimensionTransformer | validate_amounts:161 | [dim_products] Column 'price_vnd': 40 potential outliers (>3σ)
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | validate_amounts:152 | [dim_products] 'price_usd' stats: mean=806, median=285, std=1,118
+2026-04-19 02:57:16 | WARNING  | DimensionTransformer | validate_amounts:161 | [dim_products] Column 'price_usd': 40 potential outliers (>3σ)
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_products:114 | dim_products: 1300 rows
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_locations:130 | Transforming dim_locations...
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | check_duplicates:72 | [dim_locations] No duplicates found on ['location_id']
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_locations:159 | dim_locations: 50 rows
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_staff:176 | Transforming dim_staff...
+2026-04-19 02:57:16 | WARNING  | DimensionTransformer | transform_dim_staff:207 | No staff data available. Creating empty dim_staff.
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_date:230 | Generating dim_date from 2024-01-01 to 2027-12-31...
+2026-04-19 02:57:16 | INFO     | DimensionTransformer | transform_dim_date:262 | dim_date: 1461 rows generated
+2026-04-19 02:57:16 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Dimensions to BigQuery...
+2026-04-19 02:57:16 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 100000 rows into minpyws.techstore_analytics.dim_customers (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:57:16 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: created_at
+2026-04-19 02:57:31 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 100000 rows into minpyws.techstore_analytics.dim_customers
+2026-04-19 02:57:31 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 1300 rows into minpyws.techstore_analytics.dim_products (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:57:34 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 1300 rows into minpyws.techstore_analytics.dim_products
+2026-04-19 02:57:34 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 50 rows into minpyws.techstore_analytics.dim_locations (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:57:42 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 50 rows into minpyws.techstore_analytics.dim_locations
+2026-04-19 02:57:42 | WARNING  | PipelineOrchestrator | _load_tables:382 | Skipping empty table: dim_staff
+2026-04-19 02:57:42 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 1461 rows into minpyws.techstore_analytics.dim_date (disposition: WRITE_TRUNCATE)...
+2026-04-19 02:57:46 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 1461 rows into minpyws.techstore_analytics.dim_date
+2026-04-19 02:57:46 | INFO     | PipelineOrchestrator | run_full_pipeline:151 | Phase A complete. [RAM: 197 MB]
+2026-04-19 02:57:46 | INFO     | PipelineOrchestrator | run_full_pipeline:156 | ────────────────────────────────────────
+2026-04-19 02:57:46 | INFO     | PipelineOrchestrator | run_full_pipeline:157 | PHASE B: ORDER FACTS [RAM: 197 MB]
+2026-04-19 02:57:46 | INFO     | ShopifyExtractor | extract_orders:23 | Starting Shopify orders extraction...
+2026-04-19 02:57:46 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 1/5: shopify/orders_batch_0.json.gz
+2026-04-19 02:57:46 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_0.json.gz
+2026-04-19 02:57:57 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_0.json.gz
+2026-04-19 02:57:57 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 2/5: shopify/orders_batch_1.json.gz
+2026-04-19 02:57:57 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_1.json.gz
+2026-04-19 02:58:06 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_1.json.gz
+2026-04-19 02:58:06 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 3/5: shopify/orders_batch_2.json.gz
+2026-04-19 02:58:06 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_2.json.gz
+2026-04-19 02:58:16 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_2.json.gz
+2026-04-19 02:58:16 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 4/5: shopify/orders_batch_3.json.gz
+2026-04-19 02:58:16 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_3.json.gz
+2026-04-19 02:58:26 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_3.json.gz
+2026-04-19 02:58:26 | INFO     | ShopifyExtractor | extract_json_gzip_batches:121 | Extracting batch 5/5: shopify/orders_batch_4.json.gz
+2026-04-19 02:58:26 | INFO     | ShopifyExtractor | extract_json_gzip:24 | Extracting: gs://minpy/shopify/orders_batch_4.json.gz
+2026-04-19 02:58:37 | INFO     | ShopifyExtractor | extract_json_gzip:53 | Extracted 100000 records from shopify/orders_batch_4.json.gz
+2026-04-19 02:58:37 | INFO     | ShopifyExtractor | extract_json_gzip_batches:127 | Total records from 5 batches: 500000
+2026-04-19 02:58:37 | INFO     | ShopifyExtractor | extract_orders:29 | Shopify extraction complete: 500000 total orders
+2026-04-19 02:58:37 | INFO     | SapoExtractor | extract_online_orders:76 | Starting online orders extraction...
+2026-04-19 02:58:37 | INFO     | SapoExtractor | extract_json_gzip:24 | Extracting: gs://minpy/online_orders/online_orders.json.gz
+2026-04-19 02:59:10 | INFO     | SapoExtractor | extract_json_gzip:53 | Extracted 200000 records from online_orders/online_orders.json.gz
+2026-04-19 02:59:11 | INFO     | SapoExtractor | extract_online_orders:78 | Online orders extraction complete: 200000 orders
+2026-04-19 02:59:11 | INFO     | FactTransformer | transform_fact_orders:40 | Transforming fact_orders...
+2026-04-19 02:59:11 | INFO     | FactTransformer | transform_fact_orders:45 | Processing 500000 Shopify orders...
+2026-04-19 02:59:43 | INFO     | FactTransformer | transform_fact_orders:80 | Processing 5000 Sapo orders...
+2026-04-19 02:59:43 | INFO     | FactTransformer | transform_fact_orders:117 | Processing 200000 online orders...
+2026-04-19 03:00:05 | INFO     | FactTransformer | transform_fact_orders:160 | Combining orders from all channels...
+2026-04-19 03:00:39 | WARNING  | FactTransformer | check_nulls:42 | [fact_orders] Column 'customer_id' has 5000 null values (0.71%)
+2026-04-19 03:00:40 | WARNING  | FactTransformer | check_duplicates:66 | [fact_orders] Found 444 duplicate records on ['order_key']. Removing...
+2026-04-19 03:00:41 | INFO     | FactTransformer | validate_date_range:116 | [fact_orders] Date range for 'order_date': 2025-01-06 15:48:54.567378 to 2026-01-06 15:49:57.642486
+2026-04-19 03:00:41 | INFO     | FactTransformer | validate_amounts:152 | [fact_orders] 'total_vnd' stats: mean=113,237,014, median=78,320,000, std=113,439,581
+2026-04-19 03:00:41 | WARNING  | FactTransformer | validate_amounts:161 | [fact_orders] Column 'total_vnd': 11714 potential outliers (>3σ)
+2026-04-19 03:00:41 | INFO     | FactTransformer | transform_fact_orders:214 | fact_orders: 704556 rows
+2026-04-19 03:00:46 | INFO     | FactTransformer | transform_fact_order_items:238 | Transforming fact_order_items...
+2026-04-19 03:00:46 | INFO     | FactTransformer | transform_fact_order_items:251 | Extracting line items from shopify (500000 orders)...
+2026-04-19 03:01:17 | INFO     | FactTransformer | transform_fact_order_items:251 | Extracting line items from sapo_pos (5000 orders)...
+2026-04-19 03:01:17 | INFO     | FactTransformer | transform_fact_order_items:251 | Extracting line items from online (200000 orders)...
+2026-04-19 03:03:28 | INFO     | FactTransformer | validate_amounts:152 | [fact_order_items] 'unit_price_vnd' stats: mean=17,645,212, median=6,000,000, std=23,781,511
+2026-04-19 03:03:28 | WARNING  | FactTransformer | validate_amounts:161 | [fact_order_items] Column 'unit_price_vnd': 55802 potential outliers (>3σ)
+2026-04-19 03:03:28 | INFO     | FactTransformer | validate_amounts:152 | [fact_order_items] 'line_total_vnd' stats: mean=34,568,156, median=11,400,000, std=52,395,355
+2026-04-19 03:03:28 | WARNING  | FactTransformer | validate_amounts:161 | [fact_order_items] Column 'line_total_vnd': 48610 potential outliers (>3σ)
+2026-04-19 03:03:28 | INFO     | FactTransformer | transform_fact_order_items:323 | fact_order_items: 2099029 rows
+2026-04-19 03:03:55 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Order facts to BigQuery...
+2026-04-19 03:03:55 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 704556 rows into minpyws.techstore_analytics.fact_orders (disposition: WRITE_TRUNCATE)...
+2026-04-19 03:03:55 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: order_date
+2026-04-19 03:03:55 | INFO     | BigQueryLoader | load_dataframe:102 |   Clustering on: ['customer_id', 'channel']
+2026-04-19 03:04:19 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 704556 rows into minpyws.techstore_analytics.fact_orders
+2026-04-19 03:04:19 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 2099029 rows into minpyws.techstore_analytics.fact_order_items (disposition: WRITE_TRUNCATE)...
+2026-04-19 03:04:19 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: order_date
+2026-04-19 03:04:19 | INFO     | BigQueryLoader | load_dataframe:102 |   Clustering on: ['product_id']
+2026-04-19 03:04:22 | WARNING  | BigQueryLoader | load_dataframe:120 | Table minpyws.techstore_analytics.fact_order_items has incompatible partitioning. Dropping and recreating...
+2026-04-19 03:04:22 | INFO     | BigQueryLoader | load_dataframe:126 | Deleted incompatible table: minpyws.techstore_analytics.fact_order_items
+2026-04-19 03:04:48 | INFO     | BigQueryLoader | load_dataframe:135 | Successfully loaded 2099029 rows into minpyws.techstore_analytics.fact_order_items (recreated with correct partitioning)
+2026-04-19 03:04:48 | INFO     | PipelineOrchestrator | run_full_pipeline:186 | Phase B complete. [RAM: 906 MB]
+2026-04-19 03:04:48 | INFO     | PipelineOrchestrator | run_full_pipeline:191 | ────────────────────────────────────────
+2026-04-19 03:04:48 | INFO     | PipelineOrchestrator | run_full_pipeline:192 | PHASE C: PAYMENT FACTS [RAM: 906 MB]
+2026-04-19 03:04:48 | INFO     | PaymentExtractor | extract_paypal:23 | Starting PayPal extraction...
+2026-04-19 03:04:48 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/paypal/transactions.json.gz
+2026-04-19 03:04:52 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 11000 records from paypal/transactions.json.gz
+2026-04-19 03:04:52 | INFO     | PaymentExtractor | extract_paypal:25 | PayPal extraction complete: 11000 transactions
+2026-04-19 03:04:52 | INFO     | PaymentExtractor | extract_momo:35 | Starting MoMo extraction...
+2026-04-19 03:04:52 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/momo/transactions.json.gz
+2026-04-19 03:04:57 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 40000 records from momo/transactions.json.gz
+2026-04-19 03:04:57 | INFO     | PaymentExtractor | extract_momo:37 | MoMo extraction complete: 40000 transactions
+2026-04-19 03:04:57 | INFO     | PaymentExtractor | extract_zalopay:47 | Starting ZaloPay extraction...
+2026-04-19 03:04:57 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/zalopay/transactions.json.gz
+2026-04-19 03:05:03 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 55000 records from zalopay/transactions.json.gz
+2026-04-19 03:05:03 | INFO     | PaymentExtractor | extract_zalopay:49 | ZaloPay extraction complete: 55000 transactions
+2026-04-19 03:05:03 | INFO     | FactTransformer | transform_fact_payments:347 | Transforming fact_payments...
+2026-04-19 03:05:03 | INFO     | FactTransformer | transform_fact_payments:352 | Processing 11000 PayPal transactions...
+2026-04-19 03:05:03 | INFO     | FactTransformer | transform_fact_payments:370 | Processing 40000 MoMo transactions...
+2026-04-19 03:05:03 | INFO     | FactTransformer | transform_fact_payments:389 | Processing 55000 ZaloPay transactions...
+2026-04-19 03:05:07 | INFO     | FactTransformer | check_duplicates:72 | [fact_payments] No duplicates found on ['payment_key']
+2026-04-19 03:05:07 | INFO     | FactTransformer | validate_date_range:116 | [fact_payments] Date range for 'payment_date': 2025-10-07 16:08:22.703760 to 2026-01-06 16:04:09.797116
+2026-04-19 03:05:07 | INFO     | FactTransformer | validate_amounts:152 | [fact_payments] 'amount_vnd' stats: mean=4,210,667, median=845,000, std=8,481,488
+2026-04-19 03:05:07 | WARNING  | FactTransformer | validate_amounts:161 | [fact_payments] Column 'amount_vnd': 4216 potential outliers (>3σ)
+2026-04-19 03:05:07 | INFO     | FactTransformer | transform_fact_payments:443 | fact_payments: 106000 rows
+2026-04-19 03:05:07 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Payment facts to BigQuery...
+2026-04-19 03:05:07 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 106000 rows into minpyws.techstore_analytics.fact_payments (disposition: WRITE_TRUNCATE)...
+2026-04-19 03:05:07 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: payment_date
+2026-04-19 03:05:07 | INFO     | BigQueryLoader | load_dataframe:102 |   Clustering on: ['customer_id', 'payment_gateway']
+2026-04-19 03:05:13 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 106000 rows into minpyws.techstore_analytics.fact_payments
+2026-04-19 03:05:13 | INFO     | PipelineOrchestrator | run_full_pipeline:211 | Phase C complete. [RAM: 927 MB]
+2026-04-19 03:05:13 | INFO     | PipelineOrchestrator | run_full_pipeline:216 | ────────────────────────────────────────
+2026-04-19 03:05:13 | INFO     | PipelineOrchestrator | run_full_pipeline:217 | PHASE D: CART EVENTS (large file — chunked mode) [RAM: 927 MB]
+2026-04-19 03:05:13 | INFO     | FactTransformer | transform_fact_cart_events_chunked:532 | Transforming fact_cart_events (chunked mode)...
+2026-04-19 03:05:13 | INFO     | TrackingExtractor | extract_cart_events_chunked:44 | Starting chunked cart events extraction (large file)...
+2026-04-19 03:05:13 | INFO     | TrackingExtractor | extract_json_gzip_chunked:69 | Extracting (chunked): gs://minpy/cart_tracking/cart_events.json.gz
+2026-04-19 03:05:49 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 50000)
+2026-04-19 03:05:49 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 1: 50000 records (total input: 50000)
+2026-04-19 03:05:53 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 100000)
+2026-04-19 03:05:53 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 2: 50000 records (total input: 100000)
+2026-04-19 03:05:57 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 150000)
+2026-04-19 03:05:57 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 3: 50000 records (total input: 150000)
+2026-04-19 03:06:01 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 200000)
+2026-04-19 03:06:01 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 4: 50000 records (total input: 200000)
+2026-04-19 03:06:05 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 250000)
+2026-04-19 03:06:05 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 5: 50000 records (total input: 250000)
+2026-04-19 03:06:09 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 300000)
+2026-04-19 03:06:09 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 6: 50000 records (total input: 300000)
+2026-04-19 03:06:13 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 350000)
+2026-04-19 03:06:13 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 7: 50000 records (total input: 350000)
+2026-04-19 03:06:17 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 400000)
+2026-04-19 03:06:17 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 8: 50000 records (total input: 400000)
+2026-04-19 03:06:21 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 450000)
+2026-04-19 03:06:21 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 9: 50000 records (total input: 450000)
+2026-04-19 03:06:25 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 500000)
+2026-04-19 03:06:25 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 10: 50000 records (total input: 500000)
+2026-04-19 03:06:29 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 550000)
+2026-04-19 03:06:29 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 11: 50000 records (total input: 550000)
+2026-04-19 03:06:33 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 600000)
+2026-04-19 03:06:33 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 12: 50000 records (total input: 600000)
+2026-04-19 03:06:37 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 650000)
+2026-04-19 03:06:37 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 13: 50000 records (total input: 650000)
+2026-04-19 03:06:41 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 700000)
+2026-04-19 03:06:41 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 14: 50000 records (total input: 700000)
+2026-04-19 03:06:45 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 750000)
+2026-04-19 03:06:45 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 15: 50000 records (total input: 750000)
+2026-04-19 03:06:49 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 800000)
+2026-04-19 03:06:49 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 16: 50000 records (total input: 800000)
+2026-04-19 03:06:53 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 850000)
+2026-04-19 03:06:53 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 17: 50000 records (total input: 850000)
+2026-04-19 03:06:57 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 900000)
+2026-04-19 03:06:57 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 18: 50000 records (total input: 900000)
+2026-04-19 03:07:02 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 950000)
+2026-04-19 03:07:02 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 19: 50000 records (total input: 950000)
+2026-04-19 03:07:07 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1000000)
+2026-04-19 03:07:07 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 20: 50000 records (total input: 1000000)
+2026-04-19 03:07:12 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1050000)
+2026-04-19 03:07:12 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 21: 50000 records (total input: 1050000)
+2026-04-19 03:07:18 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1100000)
+2026-04-19 03:07:18 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 22: 50000 records (total input: 1100000)
+2026-04-19 03:07:22 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1150000)
+2026-04-19 03:07:22 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 23: 50000 records (total input: 1150000)
+2026-04-19 03:07:27 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1200000)
+2026-04-19 03:07:27 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 24: 50000 records (total input: 1200000)
+2026-04-19 03:07:31 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1250000)
+2026-04-19 03:07:31 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 25: 50000 records (total input: 1250000)
+2026-04-19 03:07:36 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1300000)
+2026-04-19 03:07:36 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 26: 50000 records (total input: 1300000)
+2026-04-19 03:07:40 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1350000)
+2026-04-19 03:07:40 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 27: 50000 records (total input: 1350000)
+2026-04-19 03:07:45 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1400000)
+2026-04-19 03:07:45 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 28: 50000 records (total input: 1400000)
+2026-04-19 03:07:49 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1450000)
+2026-04-19 03:07:49 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 29: 50000 records (total input: 1450000)
+2026-04-19 03:07:55 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1500000)
+2026-04-19 03:07:55 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 30: 50000 records (total input: 1500000)
+2026-04-19 03:07:58 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1550000)
+2026-04-19 03:07:58 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 31: 50000 records (total input: 1550000)
+2026-04-19 03:08:03 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1600000)
+2026-04-19 03:08:03 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 32: 50000 records (total input: 1600000)
+2026-04-19 03:08:08 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1650000)
+2026-04-19 03:08:08 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 33: 50000 records (total input: 1650000)
+2026-04-19 03:08:12 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1700000)
+2026-04-19 03:08:12 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 34: 50000 records (total input: 1700000)
+2026-04-19 03:08:17 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1750000)
+2026-04-19 03:08:17 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 35: 50000 records (total input: 1750000)
+2026-04-19 03:08:23 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1800000)
+2026-04-19 03:08:23 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 36: 50000 records (total input: 1800000)
+2026-04-19 03:08:28 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1850000)
+2026-04-19 03:08:28 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 37: 50000 records (total input: 1850000)
+2026-04-19 03:08:33 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1900000)
+2026-04-19 03:08:33 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 38: 50000 records (total input: 1900000)
+2026-04-19 03:08:37 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 1950000)
+2026-04-19 03:08:37 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 39: 50000 records (total input: 1950000)
+2026-04-19 03:08:42 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2000000)
+2026-04-19 03:08:42 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 40: 50000 records (total input: 2000000)
+2026-04-19 03:08:46 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2050000)
+2026-04-19 03:08:46 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 41: 50000 records (total input: 2050000)
+2026-04-19 03:08:51 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2100000)
+2026-04-19 03:08:51 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 42: 50000 records (total input: 2100000)
+2026-04-19 03:08:56 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2150000)
+2026-04-19 03:08:56 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 43: 50000 records (total input: 2150000)
+2026-04-19 03:09:00 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2200000)
+2026-04-19 03:09:00 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 44: 50000 records (total input: 2200000)
+2026-04-19 03:09:05 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2250000)
+2026-04-19 03:09:05 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 45: 50000 records (total input: 2250000)
+2026-04-19 03:09:09 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2300000)
+2026-04-19 03:09:09 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 46: 50000 records (total input: 2300000)
+2026-04-19 03:09:14 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2350000)
+2026-04-19 03:09:14 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 47: 50000 records (total input: 2350000)
+2026-04-19 03:09:18 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2400000)
+2026-04-19 03:09:18 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 48: 50000 records (total input: 2400000)
+2026-04-19 03:09:22 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2450000)
+2026-04-19 03:09:22 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 49: 50000 records (total input: 2450000)
+2026-04-19 03:09:26 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2500000)
+2026-04-19 03:09:26 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 50: 50000 records (total input: 2500000)
+2026-04-19 03:09:30 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2550000)
+2026-04-19 03:09:30 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 51: 50000 records (total input: 2550000)
+2026-04-19 03:09:34 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2600000)
+2026-04-19 03:09:34 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 52: 50000 records (total input: 2600000)
+2026-04-19 03:09:39 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2650000)
+2026-04-19 03:09:39 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 53: 50000 records (total input: 2650000)
+2026-04-19 03:09:43 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2700000)
+2026-04-19 03:09:43 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 54: 50000 records (total input: 2700000)
+2026-04-19 03:09:49 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2750000)
+2026-04-19 03:09:49 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 55: 50000 records (total input: 2750000)
+2026-04-19 03:09:53 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2800000)
+2026-04-19 03:09:53 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 56: 50000 records (total input: 2800000)
+2026-04-19 03:09:57 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2850000)
+2026-04-19 03:09:57 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 57: 50000 records (total input: 2850000)
+2026-04-19 03:10:01 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2900000)
+2026-04-19 03:10:01 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 58: 50000 records (total input: 2900000)
+2026-04-19 03:10:07 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 2950000)
+2026-04-19 03:10:07 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 59: 50000 records (total input: 2950000)
+2026-04-19 03:10:11 | INFO     | TrackingExtractor | extract_json_gzip_chunked:92 |   Yielding chunk: 50000 records (total so far: 3000000)
+2026-04-19 03:10:11 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 60: 50000 records (total input: 3000000)
+2026-04-19 03:10:15 | INFO     | FactTransformer | transform_fact_cart_events_chunked:541 |   Processing chunk 61: 10000 records (total input: 3010000)
+2026-04-19 03:10:15 | INFO     | TrackingExtractor | extract_json_gzip_chunked:104 | Chunked extraction complete: 3010000 total records from cart_tracking/cart_events.json.gz
+2026-04-19 03:10:16 | INFO     | TrackingExtractor | extract_cart_events_chunked:49 | Chunked cart events extraction complete.
+2026-04-19 03:10:17 | INFO     | FactTransformer | check_duplicates:72 | [fact_cart_events] No duplicates found on ['event_key']
+2026-04-19 03:10:17 | INFO     | FactTransformer | validate_date_range:116 | [fact_cart_events] Date range for 'event_timestamp': 2025-08-25 23:04:11.545981 to 2025-12-16 17:56:26.615561
+2026-04-19 03:10:17 | INFO     | FactTransformer | transform_fact_cart_events_chunked:605 | fact_cart_events (chunked): 3010000 rows
+2026-04-19 03:10:17 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Cart event facts to BigQuery...
+2026-04-19 03:10:17 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 3010000 rows into minpyws.techstore_analytics.fact_cart_events (disposition: WRITE_TRUNCATE)...
+2026-04-19 03:10:17 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: event_timestamp
+2026-04-19 03:10:17 | INFO     | BigQueryLoader | load_dataframe:102 |   Clustering on: ['customer_id', 'session_id', 'event_type']
+2026-04-19 03:11:08 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 3010000 rows into minpyws.techstore_analytics.fact_cart_events
+2026-04-19 03:11:08 | INFO     | PipelineOrchestrator | run_full_pipeline:237 | Phase D complete. [RAM: 1726 MB]
+2026-04-19 03:11:08 | INFO     | PipelineOrchestrator | run_full_pipeline:242 | ────────────────────────────────────────
+2026-04-19 03:11:08 | INFO     | PipelineOrchestrator | run_full_pipeline:243 | PHASE E: BANK TRANSACTIONS [RAM: 1726 MB]
+2026-04-19 03:11:08 | INFO     | PaymentExtractor | extract_mercury_transactions:71 | Starting Mercury transactions extraction...
+2026-04-19 03:11:08 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/transactions.json.gz
+2026-04-19 03:11:12 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 5000 records from mercury/transactions.json.gz
+2026-04-19 03:11:12 | INFO     | PaymentExtractor | extract_mercury_transactions:73 | Mercury transactions extraction complete: 5000 transactions
+2026-04-19 03:11:12 | INFO     | PaymentExtractor | extract_mercury_accounts:59 | Starting Mercury accounts extraction...
+2026-04-19 03:11:12 | INFO     | PaymentExtractor | extract_json_gzip:24 | Extracting: gs://minpy/mercury/accounts.json.gz
+2026-04-19 03:11:13 | INFO     | PaymentExtractor | extract_json_gzip:53 | Extracted 3 records from mercury/accounts.json.gz
+2026-04-19 03:11:13 | INFO     | PaymentExtractor | extract_mercury_accounts:61 | Mercury accounts extraction complete: 3 accounts
+2026-04-19 03:11:13 | INFO     | FactTransformer | transform_fact_bank_transactions:626 | Transforming fact_bank_transactions...
+2026-04-19 03:11:13 | INFO     | FactTransformer | check_duplicates:72 | [fact_bank_transactions] No duplicates found on ['transaction_key']
+2026-04-19 03:11:13 | INFO     | FactTransformer | validate_date_range:116 | [fact_bank_transactions] Date range for 'transaction_date': 2025-10-08 16:05:19.307379 to 2026-01-06 16:05:19.480106
+2026-04-19 03:11:13 | INFO     | FactTransformer | validate_amounts:152 | [fact_bank_transactions] 'amount_vnd' stats: mean=430,971,211, median=367,975,200, std=396,804,751
+2026-04-19 03:11:13 | INFO     | FactTransformer | validate_amounts:152 | [fact_bank_transactions] 'amount_usd' stats: mean=17,957, median=15,332, std=16,534
+2026-04-19 03:11:13 | INFO     | FactTransformer | transform_fact_bank_transactions:687 | fact_bank_transactions: 5000 rows
+2026-04-19 03:11:13 | INFO     | PipelineOrchestrator | _load_tables:370 | Loading Bank transaction facts to BigQuery...
+2026-04-19 03:11:13 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 5000 rows into minpyws.techstore_analytics.fact_bank_transactions (disposition: WRITE_TRUNCATE)...
+2026-04-19 03:11:13 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: transaction_date
+2026-04-19 03:11:18 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 5000 rows into minpyws.techstore_analytics.fact_bank_transactions
+2026-04-19 03:11:18 | INFO     | PipelineOrchestrator | run_full_pipeline:263 | Phase E complete. [RAM: 1725 MB]
+2026-04-19 03:11:18 | INFO     | PipelineOrchestrator | run_full_pipeline:268 | ────────────────────────────────────────
+2026-04-19 03:11:18 | INFO     | PipelineOrchestrator | run_full_pipeline:269 | PHASE F: AGGREGATES & VIEWS [RAM: 1725 MB]
+2026-04-19 03:11:18 | INFO     | PipelineOrchestrator | _step_update_aggregates:396 | Updating customer aggregates...
+2026-04-19 03:11:18 | INFO     | DimensionTransformer | update_customer_aggregates:278 | Updating customer aggregates...
+2026-04-19 03:11:21 | INFO     | DimensionTransformer | update_customer_aggregates:308 | Customer aggregates updated successfully
+2026-04-19 03:11:21 | INFO     | BigQueryLoader | load_dataframe:78 | Loading 100000 rows into minpyws.techstore_analytics.dim_customers (disposition: WRITE_TRUNCATE)...
+2026-04-19 03:11:21 | INFO     | BigQueryLoader | load_dataframe:95 |   Partitioning on: created_at
+2026-04-19 03:11:36 | INFO     | BigQueryLoader | load_dataframe:111 | Successfully loaded 100000 rows into minpyws.techstore_analytics.dim_customers
+2026-04-19 03:11:36 | INFO     | PipelineOrchestrator | _step_update_aggregates:412 | Customer aggregates updated and reloaded
+2026-04-19 03:11:36 | INFO     | PipelineOrchestrator | _step_create_views:418 | Creating analytical views...
+2026-04-19 03:11:36 | INFO     | BigQueryLoader | create_views:174 | Creating analytical views...
+2026-04-19 03:11:37 | INFO     | BigQueryLoader | create_views:185 | Created view: minpyws.techstore_analytics.vw_customer_journey
+2026-04-19 03:11:38 | INFO     | BigQueryLoader | create_views:185 | Created view: minpyws.techstore_analytics.vw_cashflow_daily
+2026-04-19 03:11:39 | INFO     | BigQueryLoader | create_views:185 | Created view: minpyws.techstore_analytics.vw_payment_status
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:424 | ============================================================
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:425 | PIPELINE EXECUTION SUMMARY
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:426 | ============================================================
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:427 | Total execution time: 900.1s (15.0min)
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:428 | 
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:429 | Tables loaded:
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   dim_customers: 100,000 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   dim_products: 1,300 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   dim_locations: 50 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   dim_staff: 0 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   dim_date: 1,461 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   fact_orders: 704,556 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   fact_order_items: 2,099,029 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   fact_payments: 106,000 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   fact_cart_events: 0 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:441 |   fact_bank_transactions: 5,000 rows
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:449 | 
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:450 | Data Quality Issues:
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:452 |   ⚠ fact_orders.customer_id.nulls: 5000
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:452 |   ⚠ fact_orders.duplicates: 444
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:454 | 
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:455 | Views created: vw_customer_journey, vw_cashflow_daily, vw_payment_status
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:456 | ============================================================
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:457 | PIPELINE COMPLETED SUCCESSFULLY [RAM: 1727 MB]
+2026-04-19 03:11:39 | INFO     | PipelineOrchestrator | _print_summary:458 | ============================================================

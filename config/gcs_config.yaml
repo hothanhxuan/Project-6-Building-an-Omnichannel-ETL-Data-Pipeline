@@ -1,0 +1,56 @@
+# GCS Configuration for TechStore Vietnam ETL Pipeline
+gcs:
+  bucket_name: "minpy"
+  service_account_path: "config/minpyws-e52b3983be71.json"
+  scopes:
+    - "https://www.googleapis.com/auth/cloud-platform"
+
+# Data source paths in GCS
+sources:
+  shopify:
+    orders:
+      prefix: "shopify/"
+      pattern: "orders_batch_{}.json.gz"
+      batch_count: 5
+
+  shared:
+    customers:
+      prefix: "shared/customers/"
+      pattern: "customers_batch_{}.json.gz"
+      batch_count: 10
+    products:
+      path: "shared/products.json.gz"
+    locations:
+      path: "shared/sapo_locations.json.gz"
+
+  sapo:
+    transactions:
+      path: "sapo/transactions.json.gz"
+    accounts:
+      path: "sapo/accounts.json.gz"
+
+  online_orders:
+    orders:
+      path: "online_orders/online_orders.json.gz"
+
+  paypal:
+    transactions:
+      path: "paypal/transactions.json.gz"
+
+  mercury:
+    accounts:
+      path: "mercury/accounts.json.gz"
+    transactions:
+      path: "mercury/transactions.json.gz"
+
+  momo:
+    transactions:
+      path: "momo/transactions.json.gz"
+
+  zalopay:
+    transactions:
+      path: "zalopay/transactions.json.gz"
+
+  cart_tracking:
+    events:
+      path: "cart_tracking/cart_events.json.gz"

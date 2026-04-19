@@ -1,0 +1,270 @@
+
+can you show me the code that created View tables? I want to know the queries. 
+
+Đây là mã SQL được dùng để tạo 3 Views trong BigQuery (nằm trong file loaders/bigquery_loader.py của bạn).
+
+Bạn sẽ thấy rằng các View này thực chất là việc dùng JOIN và các hàm kết hợp (SUM, COUNT, CASE WHEN, COALESCE...) để nối các bảng fact và dim lại với nhau thành một bảng phẳng (flat table) chứa đầy đủ thông tin, sẵn sàng cho việc kéo thả trên Power BI.
+
+1. View: Báo cáo Dòng tiền Hàng ngày (vw_cashflow_daily)
+View này được tạo ra bằng cách gom (group) dữ liệu theo ngày từ 3 bảng: fact_orders (đơn hàng), fact_payments (thanh toán online), và fact_bank_transactions (tiền ngân hàng nhận được), sau đó dùng FULL OUTER JOIN kết nối chúng lại theo cột ngày (report_date).
+
+Nhờ bảng này, Dashboard Dòng tiền của bạn không cần viết DAX rườm rà.
+
+sql
+CREATE OR REPLACE VIEW `minpyws.techstore_analytics.vw_cashflow_daily` AS
+WITH daily_revenue AS (
+    -- Bước 1: Tính tổng doanh số từ các đơn hàng thành công mỗi ngày
+    SELECT
+        DATE(order_date) AS report_date,
+        SUM(total_vnd) AS sales_revenue_vnd,
+        COUNT(*) AS order_count
+    FROM `minpyws.techstore_analytics.fact_orders`
+    WHERE status NOT IN ('cancelled', 'refunded')
+    GROUP BY DATE(order_date)
+),
+daily_payments AS (
+    -- Bước 2: Tính tổng tiền thanh toán online (MoMo, ZaloPay, PayPal) mỗi ngày
+    SELECT
+        DATE(payment_date) AS report_date,
+        SUM(CASE WHEN payment_status = 'success' THEN amount_vnd ELSE 0 END) AS payments_received_vnd,
+        COUNT(CASE WHEN payment_status = 'success' THEN 1 END) AS successful_payments,
+        COUNT(CASE WHEN payment_status != 'success' THEN 1 END) AS failed_payments
+    FROM `minpyws.techstore_analytics.fact_payments`
+    GROUP BY DATE(payment_date)
+),
+daily_bank AS (
+    -- Bước 3: Tính tổng tiền ra/vào trên sao kê ngân hàng Mercury mỗi ngày
+    SELECT
+        DATE(transaction_date) AS report_date,
+        SUM(CASE WHEN amount_vnd > 0 THEN amount_vnd ELSE 0 END) AS bank_inflow_vnd,
+        SUM(CASE WHEN amount_vnd < 0 THEN ABS(amount_vnd) ELSE 0 END) AS bank_outflow_vnd
+    FROM `minpyws.techstore_analytics.fact_bank_transactions`
+    WHERE status IN ('posted', 'pending')
+    GROUP BY DATE(transaction_date)
+)
+-- Bước 4: Ghép 3 bảng con lại với nhau tính dòng tiền thực tế
+SELECT
+    COALESCE(r.report_date, p.report_date, b.report_date) AS report_date,
+    COALESCE(r.sales_revenue_vnd, 0) AS sales_revenue_vnd,
+    COALESCE(r.order_count, 0) AS order_count,
+    COALESCE(p.payments_received_vnd, 0) AS payments_received_vnd,
+    COALESCE(p.successful_payments, 0) AS successful_payments,
+    COALESCE(p.failed_payments, 0) AS failed_payments,
+    COALESCE(b.bank_inflow_vnd, 0) AS bank_inflow_vnd,
+    COALESCE(b.bank_outflow_vnd, 0) AS bank_outflow_vnd,
+    COALESCE(r.sales_revenue_vnd, 0) - COALESCE(b.bank_outflow_vnd, 0) AS net_cashflow_vnd
+FROM daily_revenue r
+FULL OUTER JOIN daily_payments p ON r.report_date = p.report_date
+FULL OUTER JOIN daily_bank b ON COALESCE(r.report_date, p.report_date) = b.report_date
+ORDER BY report_date
+2. View: Trạng thái Thanh toán (vw_payment_status)
+View này nối fact_orders với dim_customers và thông tin chi tiết thanh toán fact_payments. Đặc biệt, nó sử dụng hàm CASE WHEN để tự động phân loại đơn hàng thành Paid, Failed, Pending, và Overdue (nếu quá hạn 30 ngày). View này cực kỳ hữu ích để làm báo cáo công nợ.
+
+sql
+CREATE OR REPLACE VIEW `minpyws.techstore_analytics.vw_payment_status` AS
+SELECT
+    o.order_key,
+    o.order_id,
+    o.order_number,
+    o.customer_id,
+    c.full_name AS customer_name,
+    c.email AS customer_email,
+    o.order_date,
+    o.channel,
+    o.total_vnd,
+    o.payment_status AS order_payment_status,
+    o.payment_gateway,
+    p.payment_key,
+    p.payment_date,
+    p.payment_status AS gateway_payment_status,
+    p.amount_vnd AS paid_amount_vnd,
+    
+    -- TỰ ĐỘNG PHÂN LOẠI TRẠNG THÁI THANH TOÁN KHÁCH HÀNG:
+    CASE
+        WHEN p.payment_status = 'success' THEN 'Paid'
+        WHEN p.payment_status = 'failed' THEN 'Failed'
+        WHEN p.payment_date IS NULL AND TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), o.order_date, DAY) > 30 THEN 'Overdue'
+        WHEN p.payment_date IS NULL THEN 'Pending'
+        ELSE 'Unknown'
+    END AS payment_status_category,
+    
+    CASE
+        WHEN p.payment_date IS NOT NULL THEN
+            TIMESTAMP_DIFF(p.payment_date, o.order_date, HOUR)
+        ELSE NULL
+    END AS payment_delay_hours,
+    
+    -- TÍNH SỐ TIỀN CÒN NỢ (outstanding_amount_vnd)
+    CASE
+        WHEN p.payment_status != 'success' OR p.payment_status IS NULL THEN
+            o.total_vnd - COALESCE(p.amount_vnd, 0)
+        ELSE 0
+    END AS outstanding_amount_vnd,
+    
+    -- TÍNH SỐ NGÀY QUÁ HẠN (days_overdue)
+    CASE
+        WHEN p.payment_date IS NULL AND TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), o.order_date, DAY) > 30 THEN
+            TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), o.order_date, DAY)
+        ELSE 0
+    END AS days_overdue
+FROM `minpyws.techstore_analytics.fact_orders` o
+LEFT JOIN `minpyws.techstore_analytics.dim_customers` c
+    ON o.customer_id = c.customer_id
+LEFT JOIN `minpyws.techstore_analytics.fact_payments` p
+    ON o.transaction_id = p.transaction_id
+3. View: Hành trình Khách hàng (vw_customer_journey)
+View này phức tạp nhất vì nó nối bảng sự kiện lướt web/thêm giỏ hàng (fact_cart_events) với thông tin khách hàng (dim_customers) và cả các giao dịch mua hàng (fact_orders). Nó cung cấp cho bạn biết số lượt tương tác (touchpoint sequence) và thời gian mất bao lâu từ lúc họ xem sp tới khi họ mua hàng (days_to_first_purchase).
+
+sql
+CREATE OR REPLACE VIEW `minpyws.techstore_analytics.vw_customer_journey` AS
+WITH customer_events AS (
+    -- Bước 1: Tính thứ tự sắp xếp thời gian các sự kiện thêm giỏ hàng, xem SP
+    SELECT
+        ce.customer_id,
+        ce.session_id,
+        ce.event_type,
+        ce.event_timestamp,
+        ce.product_id,
+        ce.source AS traffic_source,
+        ce.device,
+        ce.utm_source,
+        ce.utm_campaign,
+        ROW_NUMBER() OVER (
+            PARTITION BY ce.customer_id
+            ORDER BY ce.event_timestamp
+        ) AS touchpoint_sequence
+    FROM `minpyws.techstore_analytics.fact_cart_events` ce
+    WHERE ce.customer_id IS NOT NULL
+),
+customer_purchases AS (
+    -- Bước 2: Tìm ngày mua hàng đầu tiên và rà soát tổng số tiền khách từng mua
+    SELECT
+        customer_id,
+        MIN(order_date) AS first_purchase_date,
+        COUNT(*) AS total_purchases,
+        SUM(total_vnd) AS total_revenue_vnd
+    FROM `minpyws.techstore_analytics.fact_orders`
+    WHERE customer_id IS NOT NULL
+    GROUP BY customer_id
+)
+-- Bước 3: Mix lại toàn bộ các thông tin làm Dashboard Hành trình
+SELECT
+    e.customer_id,
+    c.full_name,
+    c.customer_segment,
+    e.session_id,
+    e.event_type,
+    e.event_timestamp,
+    e.touchpoint_sequence,
+    e.product_id,
+    e.traffic_source,
+    e.device,
+    e.utm_source,
+    e.utm_campaign,
+    p.first_purchase_date,
+    p.total_purchases,
+    p.total_revenue_vnd,
+    
+    -- TÍNH THỜI GIAN MẤT BAO LÂU (TÍNH THEO NGÀY) TỪ LÚC TƯƠNG TÁC ĐẦU TIÊN TỚI ĐƠN ĐẦU
+    TIMESTAMP_DIFF(p.first_purchase_date, MIN(e.event_timestamp) OVER (PARTITION BY e.customer_id), DAY) AS days_to_first_purchase
+FROM customer_events e
+LEFT JOIN `minpyws.techstore_analytics.dim_customers` c
+    ON e.customer_id = c.customer_id
+LEFT JOIN customer_purchases p
+    ON e.customer_id = p.customer_id
+Tại sao lại chọn tạo View?
+Quy trình bạn vừa setup được gọi là làm theo hướng ELT (Extract - Load - Transform). Mã Python của chúng ta tạo Dim và Fact và Load lên BigQuery. Sau khi hoàn thiện Star Schema gốc trên BigQuery, chúng ta tạo Views trên BigQuery để đẩy việc tính toán cường độ cao (Heavy Transformation) cho Server siêu khỏe của Google BigQuery thay vì bắt laptop của bạn tính toán các phép Measure/DAX phức tạp trên Power BI Desktop. Bản chất của việc này là để tối ưu tốc độ trực quan hóa dữ liệu.
+
+where is those 3 code in 
+
+Final Project K41
+?
+
+
+Ba đoạn code SQL dùng để tạo Views này nằm trong file:
+
+👉 c:\Users\Admin\Desktop\Final Project K41\loaders\bigquery_loader.py
+
+Khi bạn mở file này ra, bạn kéo xuống phần nửa dưới của file, sẽ thấy các method chứa các đoạn mã SQL này. Cụ thể:
+
+vw_customer_journey nằm tại hàm _get_customer_journey_view_sql(self) (Khoảng line 162)
+vw_cashflow_daily nằm tại hàm _get_cashflow_daily_view_sql(self) (Khoảng line 218)
+vw_payment_status nằm tại hàm _get_payment_status_view_sql(self) (Khoảng line 265)
+Quá trình chạy như sau: Ở file main.py, khi bạn chạy lệnh cờ --full, chương trình sẽ gọi class PipelineOrchestrator trong file orchestration/pipeline_orchestrator.py. PipelineOrchestrator sẽ lần lượt chạy lệnh trích xuất dữ liệu, transform dữ liệu, load Dimensions và Fact. Sau đó, nó gọi lệnh self._step_create_views() ở bước cuối cùng (Step F). Lệnh này sẽ gọi hàm create_views() nằm trong file loaders/bigquery_loader.py để gửi tất cả các mã SQL này lên BigQuery để yêu cầu BigQuery tạo View tự động cho bạn.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+before I only know about dim and fact in PowerBI never know about view table, so explain to me in vietnamese
+
+View là gì?
+Hiểu đơn giản nhất
+Loại	Lưu trữ data?	Ví dụ
+Table (dim, fact)	✅ Có — data thật nằm trên ổ cứng	dim_customers, fact_orders
+View	❌ Không — chỉ là câu SQL được lưu sẵn	vw_cashflow_daily
+View = một câu SELECT query được đặt tên và lưu lại, mỗi lần bạn mở view nó sẽ chạy lại câu query đó trên data thật.
+
+Ví dụ cụ thể
+Bảng vw_cashflow_daily thực chất là câu SQL này được lưu sẵn:
+
+sql
+-- Mỗi lần mở view, BigQuery tự chạy câu này:
+SELECT
+    DATE(order_date) AS report_date,
+    SUM(total_vnd) AS sales_revenue_vnd,     -- Lấy từ fact_orders
+    ...
+    SUM(amount_vnd) AS payments_received_vnd  -- Lấy từ fact_payments
+    ...
+    SUM(amount_vnd) AS bank_inflow_vnd        -- Lấy từ fact_bank_transactions
+FROM fact_orders
+JOIN fact_payments ...
+JOIN fact_bank_transactions ...
+GROUP BY report_date
+So sánh dễ hiểu
+Hãy tưởng tượng thế này:
+
+dim_customers = Cuốn sổ danh sách khách hàng (data thật, nằm trên kệ)
+fact_orders = Cuốn sổ ghi đơn hàng (data thật, nằm trên kệ)
+vw_cashflow_daily = Tấm bảng ghi: "Khi ai đó hỏi doanh thu, hãy mở cuốn sổ đơn hàng + sổ thanh toán + sổ ngân hàng, cộng lại theo ngày rồi đưa kết quả"
+View không tốn dung lượng lưu trữ (vì không lưu data), nhưng tốn thời gian tính toán mỗi lần query.
+
+3 Views trong project của bạn
+View	Kết hợp từ	Mục đích
+vw_customer_journey	fact_cart_events + dim_customers + fact_orders	Hành trình khách hàng: từ lúc xem sản phẩm → thêm giỏ hàng → mua hàng
+vw_cashflow_daily	fact_orders + fact_payments + fact_bank_transactions	Dòng tiền theo ngày: doanh thu, thanh toán, tiền vào/ra ngân hàng
+vw_payment_status	fact_orders + fact_payments + dim_customers	Trạng thái thanh toán: đã trả, chờ, quá hạn, thất bại
+Với Power BI — dùng thế nào?
+Bạn có 2 lựa chọn:
+
+Cách 1: Import dim + fact → tự viết DAX (khuyên dùng)
+
+Import: dim_customers, dim_products, dim_date, dim_locations,
+        fact_orders, fact_order_items, fact_payments, 
+        fact_cart_events, fact_bank_transactions
+→ Tạo relationships trong Model
+→ Viết DAX measures
+→ Linh hoạt, tuỳ biến cao
+Cách 2: Import luôn views (nhanh hơn, ít DAX hơn)
+
+Import: vw_cashflow_daily, vw_customer_journey, vw_payment_status
+→ Data đã JOIN + tổng hợp sẵn
+→ Chỉ cần kéo thả, viết rất ít DAX
+→ Nhưng ít linh hoạt hơn
+Cách 3: Kết hợp cả hai ← tốt nhất
+
+Import dim + fact (để tự viết DAX khi cần)
+Import views (để có sẵn data tổng hợp, giảm công viết DAX)
+Bạn muốn đi theo cách nào?
