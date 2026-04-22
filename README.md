@@ -1,4 +1,4 @@
-# 🛒 TechStore Vietnam — E-commerce Analytics ETL Pipeline
+# 🛒 TechStore Vietnam — Building an Omnichannel Retail ETL Pipeline
 
 A production-grade, memory-optimized ETL pipeline that consolidates **6M+ records** from multiple e-commerce platforms, payment gateways, and user tracking systems into a **Google BigQuery** Star Schema data warehouse — powering **3 Power BI dashboards** for business intelligence.
 
