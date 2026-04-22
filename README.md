@@ -17,7 +17,7 @@ Date: 2026-02-20
 ## 📋 Table of Contents
 
 1. [🔍 Overview](#-overview)
-2. [Architecture](#-architecture)
+2. [🏗 Architecture](#-architecture)
 3. [Data Model](#-data-model-star-schema)
 4. [RFM Customer Segmentation](#-rfm-customer-segmentation)
 5. [Project Structure](#-project-structure)
@@ -53,7 +53,7 @@ Date: 2026-02-20
 
 ---
 
-## 2.🏗 Architecture
+## 2. 🏗 Architecture
 
 ### Medallion Architecture
 
