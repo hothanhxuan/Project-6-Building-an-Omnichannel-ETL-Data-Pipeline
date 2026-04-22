@@ -1,212 +1,419 @@
-# Project 6: E-commerce-Analytics-ETL-Pipeline Using Python 
+# 🛒 TechStore Vietnam — E-commerce Analytics ETL Pipeline
 
-**Domain:**  
-Techstore E-commerce Retail 
+A production-grade, memory-optimized ETL pipeline that consolidates **6M+ records** from multiple e-commerce platforms, payment gateways, and user tracking systems into a **Google BigQuery** Star Schema data warehouse — powering **3 Power BI dashboards** for business intelligence.
 
-![Image](https://github.com/user-attachments/assets/dc5b98f5-b550-4aad-ac0c-de1ee26fb020)
+---
 
-Author: Susan Ho  
-Date: 2026-04-18  
-Tools Used: Python, BigQuery, PowerBI 
+## 📋 Table of Contents
 
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Data Model](#-data-model-star-schema)
+- [RFM Customer Segmentation](#-rfm-customer-segmentation)
+- [Project Structure](#-project-structure)
+- [Tech Stack](#-tech-stack)
+- [Setup & Installation](#-setup--installation)
+- [Usage](#-usage)
+- [Pipeline Execution Flow](#-pipeline-execution-flow)
+- [Data Quality](#-data-quality)
+- [Power BI Dashboards](#-power-bi-dashboards)
 
-## Architecture
+---
+
+## 🔍 Overview
+
+**TechStore Vietnam** is a technology retail chain operating across multiple sales channels. This project builds an automated data pipeline to:
+
+1. **Extract** raw data from Google Cloud Storage (GCS) — orders, customers, products, payments, tracking events
+2. **Transform** using a Medallion Architecture (Bronze → Silver → Gold) with automated data quality checks
+3. **Load** into BigQuery with time partitioning & clustering for optimized query performance
+4. **Analyze** via 3 analytical views consumed by Power BI dashboards
+
+### Key Features
+
+| Feature | Description |
+|---|---|
+| 🧠 **Memory-Optimized** | Phased execution with `ijson` streaming & chunked processing — runs on 8GB RAM |
+| 📊 **10-Table Star Schema** | 5 dimensions + 5 fact tables with surrogate keys (MD5 hash) |
+| 🎯 **RFM Segmentation** | NTILE(5) scoring → 11 customer segments, auto-updated after each pipeline run |
+| ✅ **Data Quality** | Automated null checks, duplicate removal, date validation, outlier detection (3σ) |
+| 🔄 **Auto-Recovery** | BigQuery loader auto-retries on partitioning conflicts |
+| 📈 **3 Analytical Views** | Customer Journey, Daily Cashflow, Payment Status — ready for Power BI |
+| 🖥️ **CLI Interface** | 4 run modes: `--full`, `--extract`, `--transform`, `--info` |
+
+---
+
+## 🏗 Architecture
+
+### Medallion Architecture
+
 ```
-┌─────────────────┐
-│  GCS Bucket     │  gs://minpy/
-│  (Raw Data)     │  shopify/, sapo/, paypal/, momo/, zalopay/, mercury/, cart_tracking/
-└────────┬────────┘
-         │ Python ETL (Extract)
-         ▼
-┌─────────────────┐
-│  Transform      │  Data Quality Checks → Star Schema
-│  (pandas)       │  5 Dimensions + 5 Facts
-└────────┬────────┘
-         │ Load
-         ▼
-┌─────────────────┐
-│  BigQuery       │  minpyws.techstore_analytics
-│  Data Warehouse │  + 3 Analytical Views
-└────────┬────────┘
-         │ DirectQuery
-         ▼
-┌─────────────────┐
-│  Power BI       │  Customer Journey | Cashflow | Payment Status
-│  Dashboards     │
-└─────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                        BRONZE (Raw Data)                           │
+│   Google Cloud Storage (GCS) — .json.gz compressed files           │
+│   ┌──────────┬──────────┬──────────┬──────────┬──────────────────┐  │
+│   │ Shopify  │ Sapo POS │ Payments │ Mercury  │ Cart Tracking    │  │
+│   │ Orders   │ Orders   │ MoMo     │ Bank     │ Events           │  │
+│   │ (5 batch)│ Customers│ ZaloPay  │ Accounts │ (269MB gzip)     │  │
+│   │          │ Products │ PayPal   │ Txns     │                  │  │
+│   │          │ Locations│          │          │                  │  │
+│   └──────────┴──────────┴──────────┴──────────┴──────────────────┘  │
+└─────────────────────────┬───────────────────────────────────────────┘
+                          │ Extract (ijson streaming + chunked)
+                          ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      SILVER (Cleaned)                              │
+│   Python / Pandas Transformations                                  │
+│   • Column standardization    • Date parsing (UTC → naive)         │
+│   • Surrogate key generation  • Nested JSON flattening             │
+│   • Data quality checks       • Type casting & null handling       │
+│   • RFM segmentation          • Multi-source union                 │
+└─────────────────────────┬───────────────────────────────────────────┘
+                          │ Load (partitioned + clustered)
+                          ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                        GOLD (Serving)                              │
+│   Google BigQuery — Star Schema                                    │
+│   ┌───────────────────────┐  ┌───────────────────────────────────┐  │
+│   │ 5 Dimension Tables    │  │ 5 Fact Tables                    │  │
+│   │ • dim_customers       │  │ • fact_orders                    │  │
+│   │ • dim_products        │  │ • fact_order_items               │  │
+│   │ • dim_locations       │  │ • fact_payments                  │  │
+│   │ • dim_staff           │  │ • fact_cart_events               │  │
+│   │ • dim_date            │  │ • fact_bank_transactions         │  │
+│   └───────────────────────┘  └───────────────────────────────────┘  │
+│   ┌───────────────────────────────────────────────────────────────┐  │
+│   │ 3 Analytical Views                                           │  │
+│   │ • vw_customer_journey  • vw_cashflow_daily  • vw_payment_... │  │
+│   └───────────────────────────────────────────────────────────────┘  │
+└─────────────────────────┬───────────────────────────────────────────┘
+                          │
+                          ▼
+                    📊 Power BI Dashboards
 ```
 
+### Memory-Optimized Pipeline Phases
 
-## Project Structure
+The pipeline processes data in **6 isolated phases**, freeing memory between each phase to run on machines with limited RAM (8GB):
+
 ```
-Project/
-├── config/
-│   ├── credentials.json (not committed, stored locally only)
-│   ├── gcs_config.yaml              # GCS bucket paths configuration
-│   └── bigquery_schema.yaml         # BigQuery table schemas
-├── extractors/
-│   ├── base_extractor.py            # Base GCS extractor class
-│   ├── shopify_extractor.py         # Shopify order extraction
-│   ├── sapo_extractor.py            # Sapo POS + shared data extraction
-│   ├── payment_extractor.py         # PayPal/MoMo/ZaloPay/Mercury extraction
-│   └── tracking_extractor.py        # Cart tracking events extraction
-├── transformers/
-│   ├── base_transformer.py          # Data quality checks & utilities
-│   ├── dimension_transformer.py     # Dimension table transformations
-│   └── fact_transformer.py          # Fact table transformations
-├── loaders/
-│   └── bigquery_loader.py           # BigQuery loading & view creation
-├── orchestration/
-│   └── pipeline_orchestrator.py     # Full pipeline orchestration
-├── utils/
-│   └── logger.py                    # Logging utility
-├── tests/
-│   └── test_pipeline.py             # Unit tests
-├── main.py                          # CLI entry point
-├── requirements.txt                 # Python dependencies
-└── README.md                        # This file
+Phase A: Dimensions      → extract → transform → load → gc.collect()
+Phase B: Order Facts     → extract → transform → load → gc.collect()
+Phase C: Payment Facts   → extract → transform → load → gc.collect()
+Phase D: Cart Events     → chunked extract (50K/batch) → transform → load → gc.collect()
+Phase E: Bank Txns       → extract → transform → load → gc.collect()
+Phase F: Aggregates      → update customer RFM → create views
 ```
 
+---
 
-## Setup Instructions
+## 📐 Data Model (Star Schema)
 
+```
+                          ┌──────────────────┐
+                          │   dim_customers   │
+                          │──────────────────│
+                          │ customer_id (PK) │
+                          │ email            │
+                          │ full_name        │
+                          │ customer_segment │◄── RFM (11 segments)
+                          │ lifetime_value   │
+                          │ total_orders     │
+                          └────────┬─────────┘
+                                   │
+              ┌────────────────────┼────────────────────┐
+              │                    │                    │
+    ┌─────────▼────────┐ ┌────────▼─────────┐ ┌───────▼──────────┐
+    │   fact_orders     │ │  fact_payments   │ │ fact_cart_events  │
+    │──────────────────│ │─────────────────│ │─────────────────│
+    │ order_key (PK)   │ │ payment_key (PK)│ │ event_key (PK)   │
+    │ customer_id (FK) │ │ customer_id (FK)│ │ customer_id (FK) │
+    │ location_id (FK) │ │ payment_gateway │ │ product_id (FK)  │
+    │ order_date       │ │ amount_vnd      │ │ event_type       │
+    │ channel          │ │ payment_status  │ │ session_id       │
+    │ total_vnd        │ │ payment_date    │ │ device / browser │
+    └────────┬─────────┘ └─────────────────┘ └──────────────────┘
+             │
+    ┌────────▼─────────┐    ┌──────────────────────────────────┐
+    │ fact_order_items  │    │     fact_bank_transactions       │
+    │──────────────────│    │──────────────────────────────────│
+    │ order_item_key   │    │ transaction_key (PK)             │
+    │ order_key (FK)   │    │ amount_usd / amount_vnd          │
+    │ product_id (FK)  │    │ transaction_type                 │
+    │ quantity         │    │ counterparty                     │
+    │ unit_price_vnd   │    │ transaction_date                 │
+    └──────────────────┘    └──────────────────────────────────┘
 
-### Prerequisites
-- Python 3.9+
-- Google Cloud service account with BigQuery and GCS access
-- Power BI Desktop (for dashboard development)
+    ┌──────────────────┐  ┌──────────────┐  ┌──────────────┐
+    │   dim_products   │  │ dim_locations │  │  dim_staff   │
+    │──────────────────│  │──────────────│  │──────────────│
+    │ product_id (PK)  │  │ location_id  │  │ staff_id     │
+    │ product_name     │  │ location_name│  │ full_name    │
+    │ category / brand │  │ city         │  │ position     │
+    │ price_vnd / usd  │  │ location_type│  │ location_id  │
+    └──────────────────┘  └──────────────┘  └──────────────┘
 
+    ┌───────────────────────────────────────────────────────┐
+    │                     dim_date                          │
+    │ date_key │ year │ quarter │ month │ week │ is_weekend │
+    │ day_name │ is_holiday │ fiscal_year │ fiscal_quarter  │
+    └───────────────────────────────────────────────────────┘
+```
 
-### Installation
+---
+
+## 🎯 RFM Customer Segmentation
+
+Customers are scored using **NTILE(5)** across three axes, then mapped to **11 actionable segments**:
+
+| Metric | Meaning | Scoring |
+|---|---|---|
+| **R**ecency | Days since last order | 5 = most recent → 1 = longest ago |
+| **F**requency | Total number of orders | 1 = fewest → 5 = most orders |
+| **M**onetary | Lifetime value (VND) | 1 = lowest → 5 = highest spending |
+
+### Segment Matrix (R × F)
+
+| Segment | R Score | F Score | Action |
+|---|---|---|---|
+| 🏆 Champions | 4-5 | 4-5 | Reward — they're your best |
+| 💎 Loyal | 3-4 | 4-5 | Upsell premium products |
+| 🌱 Potential Loyalist | 4-5 | 3 | Nurture with engagement |
+| ⭐ Promising | 4-5 | 2 | Encourage repeat purchases |
+| 🆕 New Customer | 4-5 | 1 | Welcome campaign |
+| ⚠️ Need Attention | 3 | 3 | Re-engage with offers |
+| 😴 About To Sleep | 2-3 | 1-2 | Win-back campaign |
+| 🔴 At Risk | 2 | 4-5 | Urgent retention effort |
+| 🚨 Cannot Lose Them | 1 | 4-5 | Highest priority rescue |
+| 💤 Hibernating | 1-2 | 3 | Reactivation attempt |
+| ❌ Lost | 1 | 1-2 | Low-cost re-engagement |
+
+---
+
+## 📁 Project Structure
+
+```
+E-commerce-Analytics-ETL-Pipeline/
+│
+├── main.py                              # CLI entry point (--full/--extract/--transform/--info)
+│
+├── extractors/                          # Data extraction from GCS
+│   ├── __init__.py
+│   ├── base_extractor.py                # GCS auth, ijson streaming, chunked extraction
+│   ├── shopify_extractor.py             # Shopify orders (5 batch files)
+│   ├── sapo_extractor.py                # Sapo POS orders, customers, products, locations
+│   ├── payment_extractor.py             # PayPal, MoMo, ZaloPay, Mercury
+│   └── tracking_extractor.py            # Cart events (chunked for 269MB file)
+│
+├── transformers/                        # Data transformation & quality
+│   ├── __init__.py
+│   ├── base_transformer.py              # Quality checks, surrogate keys, date parsing
+│   ├── dimension_transformer.py         # 5 dimension tables + RFM segmentation
+│   └── fact_transformer.py              # 5 fact tables + chunked cart processing
+│
+├── loaders/                             # BigQuery loading & views
+│   ├── __init__.py
+│   └── bigquery_loader.py              # Load with partitioning, clustering, auto-retry
+│
+├── orchestration/                       # Pipeline coordination
+│   ├── __init__.py
+│   └── pipeline_orchestrator.py         # 6-phase memory-optimized execution
+│
+├── utils/                               # Shared utilities
+│   ├── __init__.py
+│   ├── config.py                        # .env loader, credential management
+│   └── logger.py                        # Dual-output logger (console + daily file)
+│
+├── config/                              # Configuration files
+│   ├── bigquery_schema.yaml             # Full schema definition (10 tables + 3 views)
+│   └── gcs_config.yaml                  # GCS bucket & source paths
+│
+├── logs/                                # Pipeline execution logs (daily rotation)
+├── tests/                               # Unit & integration tests
+│
+├── .env.example                         # Environment template
+├── .gitignore
+└── requirements.txt                     # Python dependencies
+```
+
+---
+
+## 🛠 Tech Stack
+
+| Category | Technology |
+|---|---|
+| **Language** | Python 3.10+ |
+| **Cloud Storage** | Google Cloud Storage (GCS) |
+| **Data Warehouse** | Google BigQuery |
+| **Data Processing** | Pandas, NumPy |
+| **Streaming JSON** | ijson (memory-efficient parsing) |
+| **Authentication** | google-oauth2 + Service Account |
+| **Configuration** | python-dotenv + YAML |
+| **Visualization** | Power BI (connected to BigQuery) |
+| **Monitoring** | psutil (RAM tracking), structured logging |
+
+---
+
+## 🚀 Setup & Installation
+
+### 1. Clone the repository
+
 ```bash
-# Install dependencies
+git clone https://github.com/hothanhxuan/E-commerce-Analytics-ETL-Pipeline.git
+cd E-commerce-Analytics-ETL-Pipeline
+```
+
+### 2. Install dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
+### 3. Configure credentials
 
-### Configuration
-1. Place your GCP service account JSON file in `config/`
-2. Update the file path in `extractors/base_extractor.py` if needed
-3. Verify bucket name and paths in `config/gcs_config.yaml`
-
-
-## Usage
-
-
-### Run Full Pipeline
 ```bash
-python main.py --full
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env with your values:
+#   GOOGLE_CREDENTIALS_PATH=config/your-key.json
+#   GCP_PROJECT_ID=your-project-id
 ```
-This will:
-1. Extract all data from GCS bucket `minpy`
-2. Transform into star schema (5 dimensions + 5 facts)
-3. Load into BigQuery dataset `techstore_analytics`
-4. Create analytical views
-5. Update customer aggregates
 
+### 4. Place your GCP service account key
 
-### Other Modes
 ```bash
-# Extract data from GCS only (no loading)
+# Download your service account JSON from Google Cloud Console
+# Place it in the config/ directory
+# Update GOOGLE_CREDENTIALS_PATH in .env accordingly
+```
+
+---
+
+## ▶️ Usage
+
+```bash
+# Run the full ETL pipeline
+python main.py --full
+
+# Extract data from GCS only (no transform or load)
 python main.py --extract
 
-
-# Extract and transform (no BigQuery loading)
+# Extract + transform (no BigQuery load)
 python main.py --transform
 
-
-# Show BigQuery table information
+# View BigQuery table information
 python main.py --info
 ```
 
+### Example Output
 
-### Run Tests
-```bash
-python -m pytest tests/test_pipeline.py -v
+```
+2026-04-22 15:00:01 | INFO     | PipelineOrchestrator | ============================================================
+2026-04-22 15:00:01 | INFO     | PipelineOrchestrator | STARTING FULL ETL PIPELINE (Memory-Optimized)
+2026-04-22 15:00:01 | INFO     | PipelineOrchestrator | ────────────────────────────────────────
+2026-04-22 15:00:01 | INFO     | PipelineOrchestrator | PHASE A: DIMENSIONS [RAM: 245 MB]
+2026-04-22 15:00:15 | INFO     | DimensionTransformer | dim_customers: 2,000,000 rows
+2026-04-22 15:00:16 | INFO     | DimensionTransformer | dim_products: 1,500 rows
+...
+2026-04-22 15:12:30 | INFO     | PipelineOrchestrator | ============================================================
+2026-04-22 15:12:30 | INFO     | PipelineOrchestrator | PIPELINE COMPLETED SUCCESSFULLY [RAM: 512 MB]
+2026-04-22 15:12:30 | INFO     | PipelineOrchestrator | Total execution time: 749.2s (12.5min)
 ```
 
+---
 
-## Data Model
+## ⚙️ Pipeline Execution Flow
 
+```
+python main.py --full
+        │
+        ▼
+┌─── Phase A: DIMENSIONS ───────────────────────────────────────┐
+│  Extract: customers (10 batch) + products + locations + staff │
+│  Transform: 5 dimension tables                                │
+│  Load → BigQuery                                              │
+│  Free memory ✓                                                │
+└───────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─── Phase B: ORDER FACTS ──────────────────────────────────────┐
+│  Extract: Shopify (5 batch) + Sapo POS + Online orders        │
+│  Transform: fact_orders + fact_order_items (explode line items)│
+│  Load → BigQuery (partitioned by order_date)                  │
+│  Free memory ✓                                                │
+└───────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─── Phase C: PAYMENT FACTS ────────────────────────────────────┐
+│  Extract: PayPal + MoMo + ZaloPay                             │
+│  Transform: fact_payments (unified schema)                    │
+│  Load → BigQuery (clustered by payment_gateway)               │
+│  Free memory ✓                                                │
+└───────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─── Phase D: CART EVENTS (large file — chunked) ───────────────┐
+│  Extract: cart_events.json.gz (269MB) in 50K-record chunks    │
+│  Transform: each chunk independently                          │
+│  Load → BigQuery (clustered by customer_id, event_type)       │
+│  Free memory ✓                                                │
+└───────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─── Phase E: BANK TRANSACTIONS ────────────────────────────────┐
+│  Extract: Mercury bank accounts + transactions                │
+│  Transform: fact_bank_transactions                            │
+│  Load → BigQuery (partitioned by transaction_date)            │
+│  Free memory ✓                                                │
+└───────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─── Phase F: AGGREGATES & VIEWS ───────────────────────────────┐
+│  Update dim_customers with RFM segmentation (11 segments)     │
+│  Create 3 analytical views for Power BI                       │
+│  Print execution summary + data quality report                │
+└───────────────────────────────────────────────────────────────┘
+```
 
-### Dimension Tables
-| Table | Description | Partition |
-|-------|-------------|-----------|
-| dim_customers | Customer information | created_at (DAY) |
-| dim_products | Product catalog | - |
-| dim_locations | Store/warehouse locations | - |
-| dim_staff | Staff information | - |
-| dim_date | Date dimension (2024-2027) | - |
+---
 
+## ✅ Data Quality
 
-### Fact Tables
-| Table | Description | Partition | Clustering |
-|-------|-------------|-----------|------------|
-| fact_orders | All orders (Shopify+Sapo+Online) | order_date (DAY) | customer_id, channel |
-| fact_order_items | Order line items | order_date (DAY) | product_id |
-| fact_payments | Payment transactions (PayPal+MoMo+ZaloPay) | payment_date (DAY) | customer_id, payment_gateway |
-| fact_cart_events | User behavior tracking | event_timestamp (DAY) | customer_id, session_id, event_type |
-| fact_bank_transactions | Mercury bank data | transaction_date (DAY) | - |
+Automated quality checks run at every transformation step:
 
+| Check | Method | Action |
+|---|---|---|
+| **Null Detection** | `check_nulls()` | Logs count + percentage per column |
+| **Duplicate Removal** | `check_duplicates()` | Detects AND removes duplicate records |
+| **Date Validation** | `validate_date_range()` | Flags out-of-range and future dates |
+| **Outlier Detection** | `validate_amounts()` | 3σ (standard deviation) method for numeric fields |
+| **Surrogate Keys** | `generate_surrogate_key()` | MD5 hash — deterministic, collision-resistant |
 
-### Analytical Views
+Quality issues are accumulated in a `quality_report` dict and displayed in the final pipeline summary.
+
+---
+
+## 📊 Power BI Dashboards
+
+The pipeline creates **3 analytical views** in BigQuery, consumed directly by Power BI:
+
 | View | Purpose |
-|------|---------|
-| vw_customer_journey | Customer touchpoint analysis |
-| vw_cashflow_daily | Daily cashflow report |
-| vw_payment_status | Payment status classification |
+|---|---|
+| `vw_customer_journey` | Tracks customer touchpoints from first click to purchase, with days-to-conversion metric |
+| `vw_cashflow_daily` | Daily report combining sales revenue, payment receipts, and bank inflows/outflows |
+| `vw_payment_status` | Classifies every order as Paid / Failed / Pending / Overdue with delay metrics |
 
+---
 
-## Data Quality Checks
-The pipeline implements four categories of data quality validation:
-1. **Null Value Checks** - Critical columns (IDs, amounts)
-2. **Duplicate Checks** - Key-based deduplication
-3. **Date Range Validation** - Reasonable date boundaries, future date detection
-4. **Amount Validation** - Negative value detection, outlier identification (3σ)
+## 📄 License
 
+This project is for educational purposes as part of a Data Analytics capstone project.
 
-## Data Sources
-| Source | GCS Path | Records |
-|--------|----------|---------|
-| Shopify Orders | shopify/orders_batch_*.json.gz | ~200,000 |
-| Sapo POS | sapo/transactions.json.gz | - |
-| Online Orders | online_orders/online_orders.json.gz | ~50,000 |
-| Customers | shared/customers/customers_batch_*.json.gz | ~2,000,000 |
-| Products | shared/products.json.gz | ~1,000 |
-| Locations | shared/sapo_locations.json.gz | ~50 |
-| PayPal | paypal/transactions.json.gz | ~300 |
-| MoMo | momo/transactions.json.gz | ~500 |
-| ZaloPay | zalopay/transactions.json.gz | ~500 |
-| Mercury Bank | mercury/transactions.json.gz | ~500 |
-| Cart Events | cart_tracking/cart_events.json.gz | ~10,000+ |
+---
 
+## 👤 Author
 
-## Logging
-Pipeline logs are written to `logs/pipeline_YYYYMMDD.log` with both console and file output. Log format includes timestamp, level, module name, and message.
+**Ho Thanh Xuan**
 
-
-## Troubleshooting
-
-
-### Common Issues
-
-
-**Authentication Error**
-```
-google.auth.exceptions.DefaultCredentialsError
-```
-→ Verify the service account JSON path in `base_extractor.py`
-
-
-**Memory Error on Large Files**
-```
-MemoryError during cart_events extraction
-```
-→ The `cart_events.json.gz` file is ~269MB. Ensure at least 8GB RAM available.
-
-
-**BigQuery Permission Denied**
-```
-google.api_core.exceptions.Forbidden: 403
-```
-→ Verify the service account has BigQuery Data Editor & Job User roles.
+- GitHub: [@hothanhxuan](https://github.com/hothanhxuan)
