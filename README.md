@@ -30,7 +30,7 @@ Date: 2026-02-20
 
 ---
 
-## 1.🔍 Overview
+## 1. 🔍 Overview
 
 **TechStore Vietnam** is a technology retail chain operating across multiple sales channels. This project builds an automated data pipeline to:
 
