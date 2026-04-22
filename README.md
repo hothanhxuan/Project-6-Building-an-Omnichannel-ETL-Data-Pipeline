@@ -415,8 +415,3 @@ The pipeline creates **3 analytical views** in BigQuery, consumed directly by Po
 | `vw_cashflow_daily` | Daily report combining sales revenue, payment receipts, and bank inflows/outflows |
 | `vw_payment_status` | Classifies every order as Paid / Failed / Pending / Overdue with delay metrics |
 
----
-
-## 12.📄 License
-
-This project is for educational purposes as part of a Data Analytics capstone project.
