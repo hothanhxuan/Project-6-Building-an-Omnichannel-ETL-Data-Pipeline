@@ -18,7 +18,7 @@ dimensions:
       - {name: "city", type: "STRING", mode: "NULLABLE", description: "City"}
       - {name: "country", type: "STRING", mode: "NULLABLE", description: "Country"}
       - {name: "created_at", type: "TIMESTAMP", mode: "NULLABLE", description: "Account creation date"}
-      - {name: "customer_segment", type: "STRING", mode: "NULLABLE", description: "Segment: VIP, Regular, At-risk, New"}
+      - {name: "customer_segment", type: "STRING", mode: "NULLABLE", description: "RFM Segment: Champions, Loyal, Potential Loyalist, Promising, New Customer, Need Attention, About To Sleep, At Risk, Cannot Lose Them, Hibernating, Lost, New"}
       - {name: "lifetime_value_vnd", type: "INTEGER", mode: "NULLABLE", description: "Total spending in VND"}
       - {name: "total_orders", type: "INTEGER", mode: "NULLABLE", description: "Total number of orders"}
       - {name: "first_order_date", type: "TIMESTAMP", mode: "NULLABLE", description: "Date of first order"}

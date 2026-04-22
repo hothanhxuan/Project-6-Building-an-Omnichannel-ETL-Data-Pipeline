@@ -265,17 +265,22 @@ class DimensionTransformer(BaseTransformer):
     def update_customer_aggregates(self, dim_customers: pd.DataFrame,
                                    fact_orders: pd.DataFrame) -> pd.DataFrame:
         """
-        Update dim_customers with aggregated order metrics.
+        Update dim_customers with aggregated order metrics and RFM segmentation.
         Should be called after fact_orders is built.
+
+        RFM Segmentation uses NTILE(5) scoring (via pd.qcut) to divide
+        customers into quintiles for Recency, Frequency, and Monetary,
+        then maps combined scores to 11 named segments.
 
         Args:
             dim_customers: Current dim_customers DataFrame.
             fact_orders: Completed fact_orders DataFrame.
 
         Returns:
-            Updated dim_customers with lifetime_value, total_orders, etc.
+            Updated dim_customers with lifetime_value, total_orders,
+            and RFM-based customer_segment.
         """
-        self.logger.info("Updating customer aggregates...")
+        self.logger.info("Updating customer aggregates with RFM segmentation...")
 
         if fact_orders.empty or "customer_id" not in fact_orders.columns:
             self.logger.warning("No order data to aggregate. Skipping customer updates.")
@@ -300,34 +305,133 @@ class DimensionTransformer(BaseTransformer):
         dim_customers["lifetime_value_vnd"] = dim_customers["lifetime_value_vnd"].fillna(0).astype(int)
         dim_customers["total_orders"] = dim_customers["total_orders"].fillna(0).astype(int)
 
-        # Segment customers based on RFM
-        dim_customers["customer_segment"] = dim_customers.apply(
-            self._assign_segment, axis=1
-        )
+        # Apply RFM segmentation (11 segments)
+        dim_customers = self._calculate_rfm_segments(dim_customers)
 
-        self.logger.info("Customer aggregates updated successfully")
+        self.logger.info("Customer aggregates and RFM segmentation updated successfully")
         return dim_customers
 
+    def _calculate_rfm_segments(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Calculate RFM scores using NTILE(5) and map to 11 named segments.
+
+        NTILE(5) divides customers into 5 equal groups (quintiles):
+          - Score 5 = best (most recent, most frequent, highest spending)
+          - Score 1 = worst
+
+        The 11 segments are mapped from combined R+F scores:
+          Champions, Loyal, Potential Loyalist, Promising, New Customer,
+          Need Attention, About To Sleep, At Risk, Cannot Lose Them,
+          Hibernating, Lost
+
+        Args:
+            df: dim_customers DataFrame with total_orders, lifetime_value_vnd,
+                last_order_date columns.
+
+        Returns:
+            DataFrame with customer_segment column updated.
+        """
+        # Separate customers WITH orders vs WITHOUT orders
+        has_orders = df["total_orders"] > 0
+        active = df[has_orders].copy()
+        inactive = df[~has_orders].copy()
+
+        if active.empty:
+            df["customer_segment"] = "New"
+            return df
+
+        # ── Step 1: Calculate Recency (days since last order) ──
+        now = pd.Timestamp.now()
+        active["recency_days"] = active["last_order_date"].apply(
+            lambda x: (now - pd.Timestamp(x)).days if pd.notna(x) else 9999
+        )
+
+        # ── Step 2: Score R, F, M using NTILE(5) via pd.qcut ──
+        # pd.qcut = "quantile cut" = divides data into equal-sized groups
+        # duplicates='drop' handles cases where many customers have the same value
+
+        # Recency: LOWER is better → reverse labels (5=most recent, 1=least recent)
+        active["r_score"] = pd.qcut(
+            active["recency_days"].rank(method="first"),
+            q=5, labels=[5, 4, 3, 2, 1]
+        ).astype(int)
+
+        # Frequency: HIGHER is better
+        active["f_score"] = pd.qcut(
+            active["total_orders"].rank(method="first"),
+            q=5, labels=[1, 2, 3, 4, 5]
+        ).astype(int)
+
+        # Monetary: HIGHER is better
+        active["m_score"] = pd.qcut(
+            active["lifetime_value_vnd"].rank(method="first"),
+            q=5, labels=[1, 2, 3, 4, 5]
+        ).astype(int)
+
+        # ── Step 3: Map R+F scores to 11 segments ──
+        active["customer_segment"] = active.apply(
+            lambda row: self._map_rfm_segment(row["r_score"], row["f_score"]),
+            axis=1
+        )
+
+        # Log segment distribution
+        segment_counts = active["customer_segment"].value_counts()
+        self.logger.info("RFM Segment Distribution:")
+        for segment, count in segment_counts.items():
+            self.logger.info(f"  {segment}: {count:,} customers")
+
+        # Clean up temporary columns
+        active = active.drop(columns=["recency_days", "r_score", "f_score", "m_score"])
+
+        # Assign "New" to customers with no orders
+        inactive["customer_segment"] = "New"
+
+        # Recombine
+        result = pd.concat([active, inactive], ignore_index=True)
+        return result
+
     @staticmethod
-    def _assign_segment(row) -> str:
+    def _map_rfm_segment(r_score: int, f_score: int) -> str:
         """
-        Assign customer segment based on order history.
+        Map R (Recency) and F (Frequency) scores to a named segment.
 
-        Segments: VIP, Regular, At-risk, New
+        Uses the standard RFM segmentation matrix:
+
+            F\\R │  5  │  4  │  3  │  2  │  1
+            ────┼─────┼─────┼─────┼─────┼─────
+             5  │ Champions │ Champions │ Loyal │ At Risk │ Cannot Lose
+             4  │ Champions │ Loyal     │ Loyal │ At Risk │ Cannot Lose
+             3  │ Pot.Loyal │ Need Att. │ Need Att. │ About Sleep │ Hibernating
+             2  │ Promising │ Promising │ About Sleep │ Hibernating │ Lost
+             1  │ New Cust. │ Promising │ About Sleep │ Hibernating │ Lost
+
+        Args:
+            r_score: Recency score (1-5, 5 = most recent).
+            f_score: Frequency score (1-5, 5 = most frequent).
+
+        Returns:
+            Named customer segment string.
         """
-        total_orders = row.get("total_orders", 0)
-        ltv = row.get("lifetime_value_vnd", 0)
-
-        if total_orders == 0:
-            return "New"
-        elif total_orders >= 10 or ltv >= 50_000_000:
-            return "VIP"
-        elif total_orders >= 3:
-            return "Regular"
+        if r_score >= 4 and f_score >= 4:
+            return "Champions"
+        elif r_score >= 3 and f_score >= 4:
+            return "Loyal"
+        elif r_score >= 4 and f_score == 3:
+            return "Potential Loyalist"
+        elif r_score >= 4 and f_score == 2:
+            return "Promising"
+        elif r_score >= 4 and f_score == 1:
+            return "New Customer"
+        elif r_score == 3 and f_score == 3:
+            return "Need Attention"
+        elif (r_score == 3 and f_score <= 2) or (r_score == 2 and f_score == 2):
+            return "About To Sleep"
+        elif r_score == 2 and f_score >= 4:
+            return "At Risk"
+        elif r_score == 1 and f_score >= 4:
+            return "Cannot Lose Them"
+        elif (r_score == 2 and f_score == 3) or (r_score == 1 and f_score <= 2):
+            return "Lost"
         else:
-            last_order = row.get("last_order_date")
-            if pd.notna(last_order):
-                days_since = (datetime.now() - pd.Timestamp(last_order)).days
-                if days_since > 90:
-                    return "At-risk"
-            return "Regular"
+            return "Hibernating"
+

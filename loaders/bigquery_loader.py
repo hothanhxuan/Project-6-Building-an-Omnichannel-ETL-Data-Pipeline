@@ -5,35 +5,31 @@ Creates datasets, tables, and analytical views.
 
 import pandas as pd
 from google.cloud import bigquery
-from google.oauth2 import service_account
+from utils.config import get_credentials, get_project_id, get_dataset_id
 from utils.logger import setup_logger
 
 
 class BigQueryLoader:
     """Loads DataFrames into BigQuery and manages dataset/table schemas."""
 
-    def __init__(self, project_id: str = "minpyws", dataset_id: str = "techstore_analytics"):
+    def __init__(self, project_id: str = None, dataset_id: str = None):
         """
         Initialize BigQuery loader.
 
         Args:
-            project_id: GCP project ID.
-            dataset_id: BigQuery dataset name.
+            project_id: GCP project ID (default: from .env).
+            dataset_id: BigQuery dataset name (default: from .env).
         """
         self.logger = setup_logger(self.__class__.__name__)
-        self.project_id = project_id
-        self.dataset_id = dataset_id
+        self.project_id = project_id or get_project_id()
+        self.dataset_id = dataset_id or get_dataset_id()
 
-        SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
-        credentials = service_account.Credentials.from_service_account_file(
-            r"C:\Users\Admin\Desktop\Final Project K41\config\minpyws-e52b3983be71.json",
-            scopes=SCOPES
-        )
+        credentials = get_credentials()
         self.client = bigquery.Client(
             credentials=credentials,
-            project=project_id
+            project=self.project_id
         )
-        self.dataset_ref = f"{project_id}.{dataset_id}"
+        self.dataset_ref = f"{self.project_id}.{self.dataset_id}"
 
     def create_dataset_if_not_exists(self, location: str = "US"):
         """

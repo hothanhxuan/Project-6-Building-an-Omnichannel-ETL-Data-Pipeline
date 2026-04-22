@@ -1,8 +1,8 @@
 #Data Type: Pipeline
 from google.cloud import storage
-from google.oauth2 import service_account
 import gzip
-import json 
+import json
+from utils.config import get_credentials
 from utils.logger import setup_logger
 
 
@@ -11,10 +11,8 @@ class BaseExtractor:
 
     def __init__(self, bucket_name: str):
         """ Initialize extractor from GCS bucket """
-        SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
-
-        credentials = service_account.Credentials.from_service_account_file( r"C:\Users\Admin\Desktop\Final Project K41\config\minpyws-e52b3983be71.json", scopes = SCOPES)
-        self.client = storage.Client(credentials = credentials)
+        credentials = get_credentials()
+        self.client = storage.Client(credentials=credentials)
         self.bucket = self.client.bucket(bucket_name)
         self.bucket_name = bucket_name
         self.logger = setup_logger(self.__class__.__name__)
