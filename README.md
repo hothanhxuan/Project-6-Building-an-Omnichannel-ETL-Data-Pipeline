@@ -9,26 +9,28 @@ A production-grade, memory-optimized ETL pipeline that consolidates **6M+ record
 ![Google Cloud Storage](https://img.shields.io/badge/Google_Cloud_Storage-4285F4?style=flat-square&logo=googlecloud&logoColor=white)
 
 ![Image](https://github.com/user-attachments/assets/25882460-ba32-40d8-baa9-34ac5d81b430)
+Author: Susan Ho
+Date: 2026-02-20
 
 ---
 
 ## 📋 Table of Contents
 
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Data Model](#-data-model-star-schema)
-- [RFM Customer Segmentation](#-rfm-customer-segmentation)
-- [Project Structure](#-project-structure)
-- [Tech Stack](#-tech-stack)
-- [Setup & Installation](#-setup--installation)
-- [Usage](#-usage)
-- [Pipeline Execution Flow](#-pipeline-execution-flow)
-- [Data Quality](#-data-quality)
-- [Power BI Dashboards](#-power-bi-dashboards)
+1. [Overview](#-overview)
+2. [Architecture](#-architecture)
+3. [Data Model](#-data-model-star-schema)
+4. [RFM Customer Segmentation](#-rfm-customer-segmentation)
+5. [Project Structure](#-project-structure)
+6. [Tech Stack](#-tech-stack)
+7. [Setup & Installation](#-setup--installation)
+8. [Usage](#-usage)
+9. [Pipeline Execution Flow](#-pipeline-execution-flow)
+10. [Data Quality](#-data-quality)
+11. [Power BI Dashboards](#-power-bi-dashboards)
 
 ---
 
-## 🔍 Overview
+## 1.🔍 Overview
 
 **TechStore Vietnam** is a technology retail chain operating across multiple sales channels. This project builds an automated data pipeline to:
 
@@ -51,7 +53,7 @@ A production-grade, memory-optimized ETL pipeline that consolidates **6M+ record
 
 ---
 
-## 🏗 Architecture
+## 2.🏗 Architecture
 
 ### Medallion Architecture
 
@@ -115,7 +117,7 @@ Phase F: Aggregates      → update customer RFM → create views
 
 ---
 
-## 📐 Data Model (Star Schema)
+## 3.📐 Data Model (Star Schema)
 
 ```
                           ┌──────────────────┐
@@ -170,7 +172,7 @@ Phase F: Aggregates      → update customer RFM → create views
 
 ---
 
-## 🎯 RFM Customer Segmentation
+## 4.🎯 RFM Customer Segmentation
 
 Customers are scored using **NTILE(5)** across three axes, then mapped to **11 actionable segments**:
 
@@ -198,7 +200,7 @@ Customers are scored using **NTILE(5)** across three axes, then mapped to **11 a
 
 ---
 
-## 📁 Project Structure
+## 5.📁 Project Structure
 
 ```
 E-commerce-Analytics-ETL-Pipeline/
@@ -246,7 +248,7 @@ E-commerce-Analytics-ETL-Pipeline/
 
 ---
 
-## 🛠 Tech Stack
+## 6.🛠 Tech Stack
 
 | Category | Technology |
 |---|---|
@@ -262,7 +264,7 @@ E-commerce-Analytics-ETL-Pipeline/
 
 ---
 
-## 🚀 Setup & Installation
+## 7.🚀 Setup & Installation
 
 ### 1. Clone the repository
 
@@ -298,7 +300,7 @@ cp .env.example .env
 
 ---
 
-## ▶️ Usage
+## 8.▶️ Usage
 
 ```bash
 # Run the full ETL pipeline
@@ -331,7 +333,7 @@ python main.py --info
 
 ---
 
-## ⚙️ Pipeline Execution Flow
+## 9.⚙️ Pipeline Execution Flow
 
 ```
 python main.py --full
@@ -386,7 +388,7 @@ python main.py --full
 
 ---
 
-## ✅ Data Quality
+## 10.✅ Data Quality
 
 Automated quality checks run at every transformation step:
 
@@ -402,7 +404,7 @@ Quality issues are accumulated in a `quality_report` dict and displayed in the f
 
 ---
 
-## 📊 Power BI Dashboards
+## 11.📊 Power BI Dashboards
 
 The pipeline creates **3 analytical views** in BigQuery, consumed directly by Power BI:
 
@@ -414,14 +416,6 @@ The pipeline creates **3 analytical views** in BigQuery, consumed directly by Po
 
 ---
 
-## 📄 License
+## 12.📄 License
 
 This project is for educational purposes as part of a Data Analytics capstone project.
-
----
-
-## 👤 Author
-
-**Ho Thanh Xuan**
-
-- GitHub: [@hothanhxuan](https://github.com/hothanhxuan)
