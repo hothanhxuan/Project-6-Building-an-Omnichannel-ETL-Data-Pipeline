@@ -1,22 +1,33 @@
-# 🛒 TechStore Vietnam — E-commerce Analytics ETL Pipeline
+# 🛒 Project 6: TechStore Vietnam — Building an Omnichannel Retail ETL Pipeline
 
 A production-grade, memory-optimized ETL pipeline that consolidates **6M+ records** from multiple e-commerce platforms, payment gateways, and user tracking systems into a **Google BigQuery** Star Schema data warehouse — powering **3 Power BI dashboards** for business intelligence.
+
+> **Note:** This repository is intended for **technical readers** — engineers, data practitioners, and technical leads. If you are looking for a business-focused overview of this project, please visit the
+
+![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)
+![Google BigQuery](https://img.shields.io/badge/Google_BigQuery-4285F4?style=flat-square&logo=googlebigquery&logoColor=white)
+![Google Cloud Storage](https://img.shields.io/badge/Google_Cloud_Storage-4285F4?style=flat-square&logo=googlecloud&logoColor=white)
+
+![Image](https://github.com/user-attachments/assets/25882460-ba32-40d8-baa9-34ac5d81b430)
+Author: Susan Ho
+
+Date: 2026-02-20
 
 ---
 
 ## 📋 Table of Contents
 
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Data Model](#-data-model-star-schema)
-- [RFM Customer Segmentation](#-rfm-customer-segmentation)
-- [Project Structure](#-project-structure)
-- [Tech Stack](#-tech-stack)
-- [Setup & Installation](#-setup--installation)
-- [Usage](#-usage)
-- [Pipeline Execution Flow](#-pipeline-execution-flow)
-- [Data Quality](#-data-quality)
-- [Power BI Dashboards](#-power-bi-dashboards)
+1. [🔍 Overview](#-overview)
+2. [🏗 Architecture](#-architecture)
+3. [📐 Data Model (Star Schema)](#-data-model-star-schema)
+4. [🎯 RFM Customer Segmentation](#-rfm-customer-segmentation)
+5. [📁 Project Structure](#-project-structure)
+6. [🛠 Tech Stack](#-tech-stack)
+7. [🚀 Setup & Installation](#-setup--installation)
+8. [▶️ Usage](#-usage)
+9. [⚙️ Pipeline Execution Flow](#-pipeline-execution-flow)
+10. [✅ Data Quality](#-data-quality)
+11. [📊 Power BI Dashboards](#-power-bi-dashboards)
 
 ---
 
@@ -404,16 +415,3 @@ The pipeline creates **3 analytical views** in BigQuery, consumed directly by Po
 | `vw_cashflow_daily` | Daily report combining sales revenue, payment receipts, and bank inflows/outflows |
 | `vw_payment_status` | Classifies every order as Paid / Failed / Pending / Overdue with delay metrics |
 
----
-
-## 📄 License
-
-This project is for educational purposes as part of a Data Analytics capstone project.
-
----
-
-## 👤 Author
-
-**Ho Thanh Xuan**
-
-- GitHub: [@hothanhxuan](https://github.com/hothanhxuan)
