@@ -268,3 +268,117 @@ Cách 3: Kết hợp cả hai ← tốt nhất
 Import dim + fact (để tự viết DAX khi cần)
 Import views (để có sẵn data tổng hợp, giảm công viết DAX)
 Bạn muốn đi theo cách nào?
+
+
+
+
+
+
+
+
+Tuyệt vời! Lựa chọn Cách 3 (Kết hợp cả 2) là chiến lược thông minh và thực tế nhất được áp dụng ở các doanh nghiệp hiện nay. Nó giúp bạn vừa có tốc độ làm báo cáo nhanh (nhờ Views), vừa giữ được khả năng đào sâu dữ liệu / viết DAX phức tạp khi sếp yêu cầu (nhờ Dim/Fact).
+
+Dưới đây là chi tiết từng bước tiếp theo để bạn xây dựng Dashboard Power BI:
+
+Bước 1: Kết nối Power BI với Google BigQuery
+Mở Power BI Desktop.
+Chọn Get Data > More... > Tìm kiếm "Google BigQuery" > Connect.
+Đăng nhập bằng tài khoản Google (tài khoản bạn dùng để tạo BigQuery).
+Sẽ có một hộp thoại hiện lên yêu cầu chọn Project và Dataset. Hãy mở thư mục Dataset của bạn ra.
+Bước 2: Khai báo và Import dữ liệu
+Tại đây, bạn sẽ tick chọn các bảng cần thiết theo đúng Cách 3:
+
+Tick chọn các bảng Dim: dim_customers, dim_products, dim_date, dim_locations.
+Tick chọn các bảng Fact: fact_orders, fact_order_items, fact_payments, fact_cart_events, fact_bank_transactions.
+Tick chọn các Views: vw_cashflow_daily, vw_customer_journey, vw_payment_status.
+Nhấn Load. (Lưu ý: Nếu được hỏi chọn Data Connectivity mode, bạn chọn Import để báo cáo chạy mượt nhất nhé).
+Bước 3: Tổ chức Data Model (Quan trọng ⚠️)
+Chuyển sang tab Model view (icon góc trái bên dưới cùng của Power BI). Đây là bước cực kỳ quan trọng để dữ liệu không bị lỗi khi filter:
+
+Với các Views (vw_...):
+Kéo chúng ra một góc riêng biệt. KHÔNG nối (tạo relationship) các views này với bất kỳ bảng nào khác. Bản thân view đã chứa đủ thông tin (đã được JOIN sẵn ở BigQuery) để hoạt động độc lập trên 1 page dashboard.
+Với các bảng Dim và Fact:
+Xây dựng mô hình Star Schema (Lược đồ hình sao). Đặt các bảng Dim ở trên, Fact ở dưới.
+Kéo cột tương ứng để nối lại, ví dụ:
+Cột customer_id từ dim_customers -> kéo vào customer_id của fact_orders.
+Cột date từ dim_date -> kéo vào thẻ order_date của fact_orders.
+(Make sure hướng mũi tên là: Từ Dim 1 ---> * Fact)
+Bước 4: Tạo cấu trúc chứa DAX Measures
+Thay vì tạo Measure rải rác ở khắp các bảng, hãy làm cho thật chuyên nghiệp:
+
+Ở thẻ Home, chọn Enter Data.
+Đặt tên bảng là: _Measures (có dấu gạch dưới để nó luôn nằm trên cùng) -> Nhấn Load.
+Từ giờ, mọi DAX bạn viết (như Tổng Doanh thu, % Tăng trưởng) sẽ được lưu vào bảng này.
+Bước 5: Phân chia Pages và xây dựng Dashboard
+Giờ là lúc kéo thả! Bạn tạo ra 3 Pages tương ứng với 3 báo cáo:
+
+Page 1: Cashflow Dashboard
+Data source chính: Bảng vw_cashflow_daily (hoặc fact_bank_transactions tuỳ bạn).
+Thao tác: Gần như chỉ cần kéo thả các cột có sẵn ra Line Chart, Bar Chart. Rất nhẹ nhàng.
+Page 2: Customer Journey (Phễu chuyển đổi)
+Data source chính: Bảng vw_customer_journey.
+Thao tác: Dùng biểu đồ Funnel (Phễu), kéo các bước từ View visits -> View item -> Add to cart -> Checkout -> Purchase.
+Page 3: Payment Status Overview
+Data source chính: Dùng kết hợp vw_payment_status (cho xem tổng quan nhanh) VÀ các bảng dim/fact (để drill-down, ví dụ xem chi tiết giao dịch lỗi xảy ra ở thành phố nào, theo dimension Location).
+
+
+
+
+
+
+
+1. Nhóm chỉ số Bán hàng & Đơn hàng (Sales & Orders)
+Nhóm này thao tác chủ yếu trên bảng fact_orders và fact_order_items để lấy ra bức tranh tổng quan về doanh thu.
+
+dax
+// 1. Tổng doanh thu
+Total Revenue = SUM('fact_orders'[total_amount]) 
+// (Nếu doanh thu không nằm trong bảng orders, bạn có thể tính bằng: SUMX('fact_order_items', 'fact_order_items'[price] * 'fact_order_items'[quantity]))
+// 2. Tổng số lượng đơn hàng
+Total Orders = DISTINCTCOUNT('fact_orders'[order_id])
+// 3. Số lượng khách hàng đã mua
+Total distinct Customers = DISTINCTCOUNT('fact_orders'[customer_id])
+// 4. Giá trị trung bình của 1 đơn hàng (AOV - Average Order Value)
+AOV = DIVIDE([Total Revenue], [Total Orders], 0)
+// 5. Đơn hàng hoàn thành (Giả sử cột status lưu trạng thái "Delivered" hoặc "Completed")
+Completed Orders = CALCULATE([Total Orders], 'fact_orders'[status] = "completed")
+2. Nhóm chỉ số Thanh toán & Dòng tiền (Payment & Cashflow)
+Sử dụng trên bảng fact_payments hoặc fact_bank_transactions để phân tích dòng tiền vào/ra và các lỗi thanh toán.
+
+dax
+// 6. Tổng số tiền thanh toán
+Total Payment Amount = SUM('fact_payments'[amount])
+// 7. Số lượng giao dịch thành công
+Successful Transactions Count = CALCULATE(COUNTROWS('fact_payments'), 'fact_payments'[payment_status] = "success")
+// 8. Tỉ lệ thanh toán thành công (%)
+Payment Success Rate = DIVIDE([Successful Transactions Count], COUNTROWS('fact_payments'), 0)
+// 9. Tổng tiền hoàn (Refund)
+Total Refund Amount = CALCULATE(SUM('fact_payments'[amount]), 'fact_payments'[payment_status] = "refunded")
+3. Nhóm phân tích hành vi khách hàng (Customer Journey)
+Nếu bạn không dùng bảng View sẵn có mà muốn tự phân tích sâu hành vi từ bảng fact_cart_events.
+
+dax
+// 10. Số lượt xem sản phẩm
+Total Views = CALCULATE(COUNTROWS('fact_cart_events'), 'fact_cart_events'[event_type] = "view_item")
+// 11. Số lượt Thêm vào giỏ hàng
+Total Add to Cart = CALCULATE(COUNTROWS('fact_cart_events'), 'fact_cart_events'[event_type] = "add_to_cart")
+// 12. Tỉ lệ bỏ giỏ hàng (Cart Abandonment Rate)
+Cart Abandonment Rate = 
+VAR ConversionToOrder = DIVIDE([Total Orders], [Total Add to Cart], 0)
+RETURN 1 - ConversionToOrder
+4. Nhóm Time Intelligence (So sánh thời gian YTD, MoM)
+IMPORTANT
+
+Để các hàm Time Intelligence hoạt động đúng, bạn bắt buộc phải có mối quan hệ (Relationship) giữa bảng dim_date (cột Date) và fact_orders (cột Order Date), đồng thời set bảng dim_date là "Mark as Date Table" trong Power BI.
+
+dax
+// 13. Doanh thu lũy kế từ đầu năm đến hiện tại (Year-To-Date)
+Revenue YTD = TOTALYTD([Total Revenue], 'dim_date'[date])
+// 14. Doanh thu tháng trước
+Revenue Previous Month = CALCULATE([Total Revenue], PREVIOUSMONTH('dim_date'[date]))
+// 15. Tăng trưởng Doanh thu theo tháng so với tháng trước (Month-over-Month %)
+Revenue MoM% = DIVIDE([Total Revenue] - [Revenue Previous Month], [Revenue Previous Month], 0)
+TIP
+
+Mẹo triển khai Cách 3: Do bạn chọn Cách 3, phần lớn dữ liệu hiển thị (ví dụ Cashflow hàng ngày) đã được tính toán sẵn trong Data Warehouse và được xuất ra thành vw_cashflow_daily. Bạn chỉ cần dùng các measure trên khi người xem muốn Drill-down (đào sâu) để xem "tại sao số liệu trong view lại giảm?" (lúc đó họ bấm vào dimension, DAX sẽ tự động tính toán lại).
+
