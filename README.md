@@ -25,8 +25,8 @@ Date: 2026-02-20
 6. [🛠 Tech Stack](#-tech-stack)
 7. [🚀 Setup & Installation](#-setup--installation)
 8. [▶️ Usage](#-usage)
-9. [⚙️ Pipeline Execution Flow](#-pipeline-execution-flow)
-10. [✅ Data Quality](#-data-quality)
+9. [⚙️ Pipeline Execution Flow](#pipeline-execution-flow)
+10. [✅ Data Quality](#data-quality)
 11. [📊 Power BI Dashboards](#-power-bi-dashboards)
 
 ---
