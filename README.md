@@ -17,20 +17,21 @@ Date: 2026-02-20
 
 ## 📋 Table of Contents
 
-1. [🔍 Overview](#-overview)
-2. [🏗 Architecture](#-architecture)
-3. [📐 Data Model (Star Schema)](#-data-model-star-schema)
-4. [🎯 RFM Customer Segmentation](#-rfm-customer-segmentation)
-5. [📁 Project Structure](#-project-structure)
-6. [🛠 Tech Stack](#-tech-stack)
-7. [🚀 Setup & Installation](#-setup--installation)
-8. [▶️ Usage](#-usage)
-9. [⚙️ Pipeline Execution Flow](#-pipeline-execution-flow)
-10. [✅ Data Quality](#-data-quality)
-11. [📊 Power BI Dashboards](#-power-bi-dashboards)
+1. [🔍 Overview](#overview)
+2. [🏗 Architecture](#architecture)
+3. [📐 Data Model (Star Schema)](#data-model)
+4. [🎯 RFM Customer Segmentation](#rfm)
+5. [📁 Project Structure](#project-structure)
+6. [🛠 Tech Stack](#tech-stack)
+7. [🚀 Setup & Installation](#setup)
+8. [▶️ Usage](#usage)
+9. [⚙️ Pipeline Execution Flow](#pipeline-flow)
+10. [✅ Data Quality](#data-quality)
+11. [📊 Power BI Dashboards](#dashboards)
 
 ---
 
+<a id="overview"></a>
 ## 🔍 Overview
 
 **TechStore Vietnam** is a technology retail chain operating across multiple sales channels. This project builds an automated data pipeline to:
@@ -54,6 +55,7 @@ Date: 2026-02-20
 
 ---
 
+<a id="architecture"></a>
 ## 🏗 Architecture
 
 ### Medallion Architecture
@@ -118,6 +120,7 @@ Phase F: Aggregates      → update customer RFM → create views
 
 ---
 
+<a id="data-model"></a>
 ## 📐 Data Model (Star Schema)
 
 ```
@@ -173,6 +176,7 @@ Phase F: Aggregates      → update customer RFM → create views
 
 ---
 
+<a id="rfm"></a>
 ## 🎯 RFM Customer Segmentation
 
 Customers are scored using **NTILE(5)** across three axes, then mapped to **11 actionable segments**:
@@ -201,6 +205,7 @@ Customers are scored using **NTILE(5)** across three axes, then mapped to **11 a
 
 ---
 
+<a id="project-structure"></a>
 ## 📁 Project Structure
 
 ```
@@ -249,6 +254,7 @@ E-commerce-Analytics-ETL-Pipeline/
 
 ---
 
+<a id="tech-stack"></a>
 ## 🛠 Tech Stack
 
 | Category | Technology |
@@ -265,6 +271,7 @@ E-commerce-Analytics-ETL-Pipeline/
 
 ---
 
+<a id="setup"></a>
 ## 🚀 Setup & Installation
 
 ### 1. Clone the repository
@@ -301,6 +308,7 @@ cp .env.example .env
 
 ---
 
+<a id="usage"></a>
 ## ▶️ Usage
 
 ```bash
@@ -334,6 +342,7 @@ python main.py --info
 
 ---
 
+<a id="pipeline-flow"></a>
 ## ⚙️ Pipeline Execution Flow
 
 ```
@@ -389,6 +398,7 @@ python main.py --full
 
 ---
 
+<a id="data-quality"></a>
 ## ✅ Data Quality
 
 Automated quality checks run at every transformation step:
@@ -405,6 +415,7 @@ Quality issues are accumulated in a `quality_report` dict and displayed in the f
 
 ---
 
+<a id="dashboards"></a>
 ## 📊 Power BI Dashboards
 
 The pipeline creates **3 analytical views** in BigQuery, consumed directly by Power BI:
