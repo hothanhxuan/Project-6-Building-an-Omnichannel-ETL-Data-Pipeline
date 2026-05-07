@@ -66,6 +66,7 @@ class PipelineOrchestrator:
 
         # Storage for transformed DataFrames (kept lightweight)
         self.transformed = {}
+        self._row_counts = {}  # Track row counts for summary without holding DFs
 
     # ── Lazy extractor initialization ──
     @property
@@ -150,6 +151,12 @@ class PipelineOrchestrator:
 
             self.logger.info(f"Phase A complete.{_log_memory()}")
 
+            # Free dimension DataFrames no longer needed (keep dim_customers for Phase F)
+            for key in ["dim_products", "dim_locations", "dim_staff", "dim_date"]:
+                self.transformed.pop(key, None)
+            _force_gc()
+            self.logger.info(f"  Freed dimension DataFrames{_log_memory()}")
+
             # ────────────────────────────────────
             # PHASE B: Order facts (medium data)
             # ────────────────────────────────────
@@ -185,6 +192,11 @@ class PipelineOrchestrator:
 
             self.logger.info(f"Phase B complete.{_log_memory()}")
 
+            # Free large fact_order_items (2M+ rows) — only fact_orders needed for Phase F
+            self.transformed.pop("fact_order_items", None)
+            _force_gc()
+            self.logger.info(f"  Freed fact_order_items{_log_memory()}")
+
             # ────────────────────────────────────
             # PHASE C: Payment facts (small-medium)
             # ────────────────────────────────────
@@ -209,6 +221,10 @@ class PipelineOrchestrator:
             }, label="Payment facts")
 
             self.logger.info(f"Phase C complete.{_log_memory()}")
+
+            # Free payment facts
+            self.transformed.pop("fact_payments", None)
+            _force_gc()
 
             # ────────────────────────────────────
             # PHASE D: Cart events (LARGE — memory critical)
@@ -261,6 +277,10 @@ class PipelineOrchestrator:
             }, label="Bank transaction facts")
 
             self.logger.info(f"Phase E complete.{_log_memory()}")
+
+            # Free bank transaction facts
+            self.transformed.pop("fact_bank_transactions", None)
+            _force_gc()
 
             # ────────────────────────────────────
             # PHASE F: Aggregates & Views
@@ -371,6 +391,7 @@ class PipelineOrchestrator:
         for table_name, config in table_configs.items():
             df = self.transformed.get(table_name)
             if df is not None and not df.empty:
+                self._row_counts[table_name] = len(df)
                 self.loader.load_dataframe(
                     table_name=table_name,
                     df=df,
@@ -380,6 +401,7 @@ class PipelineOrchestrator:
                 )
             else:
                 self.logger.warning(f"Skipping empty table: {table_name}")
+                self._row_counts[table_name] = 0
 
     # ──────────────────────────────────────────────
     # Pipeline Steps
@@ -436,8 +458,7 @@ class PipelineOrchestrator:
         ]
 
         for table in all_tables:
-            df = self.transformed.get(table)
-            rows = len(df) if df is not None else 0
+            rows = self._row_counts.get(table, 0)
             self.logger.info(f"  {table}: {rows:,} rows")
 
         # Data quality summary

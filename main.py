@@ -94,7 +94,3 @@ Examples:
 
 if __name__ == "__main__":
     main()
-
-import os
-
-cred_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
