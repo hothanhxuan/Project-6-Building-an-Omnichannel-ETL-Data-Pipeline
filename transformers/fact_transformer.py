@@ -662,6 +662,19 @@ class FactTransformer(BaseTransformer):
         result["amount_usd"] = pd.to_numeric(result["amount_usd"], errors="coerce").fillna(0.0)
         result["amount_vnd"] = pd.to_numeric(result["amount_vnd"], errors="coerce").fillna(0).astype(int)
 
+        # Convert USD → VND for Mercury transactions that have no VND amount
+        # Preserves sign: negative USD (debits/outflows) → negative VND
+        USD_TO_VND_RATE = 25_000
+        mask_no_vnd = (result["amount_vnd"] == 0) & (result["amount_usd"] != 0)
+        result.loc[mask_no_vnd, "amount_vnd"] = (
+            result.loc[mask_no_vnd, "amount_usd"] * USD_TO_VND_RATE
+        ).astype(int)
+        if mask_no_vnd.sum() > 0:
+            self.logger.info(
+                f"  Converted {mask_no_vnd.sum()} Mercury transactions "
+                f"from USD to VND (rate: {USD_TO_VND_RATE:,})"
+            )
+
         # Data quality checks (allow negative for bank transactions)
         result = self.check_nulls(
             result, ["transaction_id", "account_id", "amount_vnd"], "fact_bank_transactions"

@@ -263,8 +263,16 @@ class BigQueryLoader:
         daily_bank AS (
             SELECT
                 DATE(transaction_date) AS report_date,
-                SUM(CASE WHEN amount_vnd > 0 THEN amount_vnd ELSE 0 END) AS bank_inflow_vnd,
-                SUM(CASE WHEN amount_vnd < 0 THEN ABS(amount_vnd) ELSE 0 END) AS bank_outflow_vnd
+                SUM(CASE
+                    WHEN COALESCE(NULLIF(amount_vnd, 0), CAST(amount_usd * 25000 AS INT64)) > 0
+                    THEN COALESCE(NULLIF(amount_vnd, 0), CAST(amount_usd * 25000 AS INT64))
+                    ELSE 0
+                END) AS bank_inflow_vnd,
+                SUM(CASE
+                    WHEN COALESCE(NULLIF(amount_vnd, 0), CAST(amount_usd * 25000 AS INT64)) < 0
+                    THEN ABS(COALESCE(NULLIF(amount_vnd, 0), CAST(amount_usd * 25000 AS INT64)))
+                    ELSE 0
+                END) AS bank_outflow_vnd
             FROM `{self.dataset_ref}.fact_bank_transactions`
             WHERE status IN ('posted', 'pending')
             GROUP BY DATE(transaction_date)
