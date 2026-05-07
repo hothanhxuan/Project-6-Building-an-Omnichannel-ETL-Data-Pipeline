@@ -1,0 +1,7 @@
+2026-05-08 00:38:43 | INFO     | Main | main:53 | Mode: FULL PIPELINE
+2026-05-08 00:38:43 | INFO     | PipelineOrchestrator | run_full_pipeline:105 | ============================================================
+2026-05-08 00:38:43 | INFO     | PipelineOrchestrator | run_full_pipeline:106 | STARTING FULL ETL PIPELINE (Memory-Optimized)
+2026-05-08 00:38:43 | INFO     | PipelineOrchestrator | run_full_pipeline:107 | Timestamp: 2026-05-08T00:38:43.783166
+2026-05-08 00:38:43 | INFO     | PipelineOrchestrator | run_full_pipeline:108 | ============================================================
+2026-05-08 00:38:43 | INFO     | PipelineOrchestrator | _step_create_dataset:390 | ────────────────────────────────────────
+2026-05-08 00:38:43 | INFO     | PipelineOrchestrator | _step_create_dataset:391 | STEP: Creating BigQuery dataset...
